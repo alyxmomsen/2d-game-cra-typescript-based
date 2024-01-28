@@ -46,7 +46,7 @@ export class GameObject {
     }
 
     updateHealthByValue (value:number) {
-        
+        this.health += value ;
     }
 
     // getDelta () {
@@ -64,7 +64,7 @@ export class GameObject {
 
         this.health = 100 ;
         this.armor = 100 ;
-        
+
         /* ------ */
     }
 }
