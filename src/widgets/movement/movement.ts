@@ -26,25 +26,26 @@ export class Movement {
             this.delta[axis] = this.delta[axis] / 1.01 ;
             
         }
-        handler('x' , right , 1);
-        handler('x' , left , -1);
-
+        
         if(!left && !right) {
             
             handlerIsNoImpulseByAxis('x');
         }
         else {
             
+            handler('x' , right , 1);
+            handler('x' , left , -1);
+            
         }
-        handler('y' , down , 1);
-        handler('y' , up , -1);
-
+        
         if(!up && !down) {
             
             handlerIsNoImpulseByAxis('y');
         }
         else {
             
+            handler('y' , down , 1);
+            handler('y' , up , -1);
             
         }
 
