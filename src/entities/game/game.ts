@@ -30,7 +30,7 @@ export class Game {
 
         /* --------------------------- */
 
-        // this.renderRect();
+        this.renderPlayerStats();
 
     }
     
@@ -44,13 +44,27 @@ export class Game {
     }
 
     private renderRect (x:number , y:number , width:number , height:number , backgroundcolor:string) {
+
         this.ctx.fillStyle = backgroundcolor ;
         this.ctx.fillRect(x , y , width , height);
     }
 
+    private renderPlayerStats () {
+        
+        const size = 150 ;
+        const margin = 9 ;
+        const padding = 9 ;
+        const linesInterval = 19 ;
+
+        this.renderRect (margin , margin , size , size * 2 , '#6666') ;
+        this.ctx.fillStyle = 'whitesmoke' ;
+        this.ctx.fillText(`health: ${this.player.getHealth()}` , padding * 2 , padding * 2 * 2 ) ;
+    }
+
     constructor (ctx:CanvasRenderingContext2D , viewPortDimensions:{vw:number , vh:number}) {
+        
         this.ctx = ctx ;
         this.keyController = new KeyController() ;
-        this.player = new Player({isInGame:true});
+        this.player = new Player({isInGame:true}) ;
     }
 }

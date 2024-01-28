@@ -32,6 +32,10 @@ export class GameObject {
         return {...this.position} ;
     }
 
+    getHealth () {
+        return this.health ;
+    }
+
     // private updateMovement () {
         
     // }
