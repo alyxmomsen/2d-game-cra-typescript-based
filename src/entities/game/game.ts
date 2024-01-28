@@ -1,14 +1,18 @@
+import { KeyController } from "../../widgets/key-controller/key-controller";
 import { GameObject } from "../game-object/game-object";
 import { Player } from "../player/player";
 
 export class Game {
 
-    private player:GameObject ;
     private ctx:CanvasRenderingContext2D ;
+    private player:GameObject ;
+    private keyController:KeyController ;
 
     update () {
+        // this.player
+        this.player.update([...this.keyController.getKeys()]);
 
-        
+        // console.log(this.keyController.getKeys().toString());
     }
     
     render () {
@@ -46,6 +50,7 @@ export class Game {
 
     constructor (ctx:CanvasRenderingContext2D , viewPortDimensions:{vw:number , vh:number}) {
         this.ctx = ctx ;
+        this.keyController = new KeyController() ;
         this.player = new Player({isInGame:true});
     }
 }
