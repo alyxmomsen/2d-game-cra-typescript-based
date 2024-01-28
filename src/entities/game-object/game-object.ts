@@ -8,6 +8,13 @@ export class GameObject {
     private dimensions:Dimensions ;
     private movement:Movement;
 
+    /* stats */
+
+    private health:number ;
+    private armor:number ; // experemental
+
+    /*  */
+
     update (keys:string[]) {
         this.movement.updateDelta(keys);
         this.updatePosititon() ;
@@ -38,6 +45,10 @@ export class GameObject {
 
     }
 
+    updateHealthByValue (value:number) {
+        
+    }
+
     // getDelta () {
     //     this.movement
     // }
@@ -49,5 +60,11 @@ export class GameObject {
         this.isInGame = isInGame ;
         this.movement = new Movement ();
 
+        /* stats */
+
+        this.health = 100 ;
+        this.armor = 100 ;
+        
+        /* ------ */
     }
 }

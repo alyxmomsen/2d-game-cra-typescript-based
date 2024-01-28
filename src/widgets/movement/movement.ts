@@ -10,19 +10,21 @@ export class Movement {
         const left = keys.includes('a') ;
         const right = keys.includes('d') ;
 
-        const handler = (axis:'x'|'y' , impulse:boolean) => {
+        const handler = (axis:'x'|'y' , impulse:boolean , inccrementDirection:1|-1) => {
             
-            const deltaDelta = 0.01 ;
+            const deltaDelta = 0.05 ;
 
             if(impulse) {
                 
-                this.delta[axis] += deltaDelta  ;
+                this.delta[axis] += deltaDelta * inccrementDirection  ;
             }
             
         }
 
-        handler('x' , right);
-        handler('y' , down);
+        handler('x' , right , 1);
+        handler('x' , left , -1);
+        handler('y' , down , 1);
+        handler('y' , up , -1);
 
     }
 
