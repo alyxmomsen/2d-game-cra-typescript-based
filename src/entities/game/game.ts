@@ -17,8 +17,10 @@ export class Game {
     
     update () {
 
+        let isImpulseIs = false ;
+
         if(this.roomDamageImpulseGenerator.get()) {
-            console.log('impulse');
+            isImpulseIs = true ;
         }
 
         /* this.player update */
