@@ -1,7 +1,6 @@
 import { GameObject } from "../game-object/game-object";
 import { Player } from "../player/player";
 
-
 export class Game {
 
     player:GameObject ;
