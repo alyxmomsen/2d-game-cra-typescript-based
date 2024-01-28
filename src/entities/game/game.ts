@@ -1,5 +1,5 @@
 import { ImpulseGenerator } from "../../features/impulse-generator/impulse-generator";
-import { KeyController } from "../../widgets/key-controller/key-controller";
+import { KeyController } from "../../widgets/key-handler/key-handler";
 import { GameObject } from "../game-object/game-object";
 import { Player } from "../player/player";
 

@@ -14,7 +14,6 @@ export class KeyController {
         window.onkeydown = (e) => {
             
             const key = e.key ;
-
             if(!this.keys.includes(key)) {
                 this.keys.push(key) ;
             }

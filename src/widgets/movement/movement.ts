@@ -2,6 +2,8 @@
 export class Movement {
 
     private delta:{x:number , y:number} ;
+    private delta_delta:number ;
+
 
     updateDelta (keys:string[]) {
 
@@ -18,13 +20,14 @@ export class Movement {
                 
                 this.delta[axis] += deltaDelta * inccrementDirection  ;
             }
-            
         }
 
         const handlerIsNoImpulseByAxis = (axis:'x'|'y') => {
 
-            this.delta[axis] = this.delta[axis] / 1.01 ;
-            
+            if(this.delta[axis] !== 0) {
+
+                this.delta[axis] = this.delta[axis] / this.delta_delta ;
+            }
         }
         
         if(!left && !right) {
@@ -59,5 +62,6 @@ export class Movement {
     constructor () {
 
         this.delta = {x:0 , y:0} ;
+        this.delta_delta = 1.01 ;
     }
 }
