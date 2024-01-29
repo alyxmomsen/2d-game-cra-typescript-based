@@ -1,5 +1,5 @@
 import { ImpulseGenerator } from "../../features/impulse-generator/impulse-generator";
-import { KeyController } from "../../widgets/key-handler/key-handler";
+import { KeyHandler } from "../../widgets/key-handler/key-handler";
 import { GameObject } from "../game-object/game-object";
 import { Player } from "../player/player";
 
@@ -7,7 +7,7 @@ export class Game {
 
     private ctx:CanvasRenderingContext2D ;
     private player:GameObject ;
-    private keyController:KeyController ;
+    private keyHandler:KeyHandler ;
 
     /* ---------------------  */
 
@@ -24,8 +24,8 @@ export class Game {
         }
 
         /* this.player update */
-
-        this.player.update([...this.keyController.getKeys()]);
+        this.player.inputController.update([...this.keyHandler.getKeys()] , isImpulseIs ? 10 : 0) ;
+        this.player.update();
 
     }
     
@@ -78,7 +78,7 @@ export class Game {
     constructor (ctx:CanvasRenderingContext2D , viewPortDimensions:{vw:number , vh:number}) {
         
         this.ctx = ctx ;
-        this.keyController = new KeyController() ;
+        this.keyHandler = new KeyHandler() ;
         this.player = new Player({isInGame:true}) ;
 
 

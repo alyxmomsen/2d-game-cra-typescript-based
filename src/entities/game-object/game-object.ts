@@ -1,4 +1,5 @@
 import { Dimensions, Position } from "../../shared/types/types";
+import { InputController } from "../../widgets/input-controller/input-controller";
 import { Movement } from "../../widgets/movement/movement";
 
 export class GameObject {
@@ -15,8 +16,22 @@ export class GameObject {
 
     /*  */
 
-    update (keys:string[]) {
-        this.movement.updateDelta(keys);
+    /* input controller */
+
+    inputController:InputController ;
+
+    /* ----------------- */
+
+    updateHealth () {
+        const {gettingDamage} = this.inputController.getInput() ;
+        this.health -= gettingDamage ;
+    }
+
+    update () {
+
+        const moveInput = this.inputController.getInput() ;
+        this.updateHealth();
+        this.movement.updateDelta({...moveInput}) ;
         this.updatePosititon() ;
     }
 
@@ -70,5 +85,7 @@ export class GameObject {
         this.armor = 100 ;
 
         /* ------ */
+
+        this.inputController = new InputController () ;
     }
 }

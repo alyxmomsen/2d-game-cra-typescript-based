@@ -1,5 +1,5 @@
 
-export class KeyController {
+export class KeyHandler {
 
     private keys:string[] ;
 

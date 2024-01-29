@@ -1,21 +1,21 @@
 
 
 
-interface Move {
-    move:{
-        up:boolean ;
-        right:boolean ;
-        down:boolean ;
-        left:boolean ;
+
+
+export class InputController {
+
+    private move: { up: boolean; right: boolean; down: boolean; left: boolean; };
+    private attack:boolean ;
+    private gettingDamage:number ;
+
+    getInput() {
+
+        const {up , down , left , right } = this.move ;
+        return {up , down , left , right , gettingDamage:this.gettingDamage} ;
     }
-}
 
-export class InputController implements Move {
-
-    move: { up: boolean; right: boolean; down: boolean; left: boolean; };
-    attack:boolean ;
-
-    update (keys:string[]) {
+    update (keys:string[] , damage:number) {
 
         this.move.up = keys.includes('w');
         this.move.right = keys.includes('d');
@@ -23,6 +23,7 @@ export class InputController implements Move {
         this.move.left = keys.includes('a');
         /* ---------------------------- */ 
         this.attack = keys.includes('Enter');
+        this.gettingDamage = damage ;
     }
 
     constructor () {
@@ -34,5 +35,6 @@ export class InputController implements Move {
         }
 
         this.attack = false ;
+        this.gettingDamage = 0 ;
     }
 }

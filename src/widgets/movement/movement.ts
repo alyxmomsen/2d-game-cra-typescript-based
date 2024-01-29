@@ -5,12 +5,12 @@ export class Movement {
     private delta_delta:number ;
 
 
-    updateDelta (keys:string[]) {
+    updateDelta ({up ,down ,left ,right}:{up:boolean , down:boolean , left:boolean , right:boolean}) {
 
-        const up = keys.includes('w') ;
-        const down = keys.includes('s') ;
-        const left = keys.includes('a') ;
-        const right = keys.includes('d') ;
+        // const up = keys.includes('w') ;
+        // const down = keys.includes('s') ;
+        // const left = keys.includes('a') ;
+        // const right = keys.includes('d') ;
 
         const handler = (axis:'x'|'y' , impulse:boolean , inccrementDirection:1|-1) => {
             
