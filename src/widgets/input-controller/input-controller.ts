@@ -15,7 +15,7 @@ export class InputController {
         return {up , down , left , right , gettingDamage:this.gettingDamage} ;
     }
 
-    update (keys:string[] , damage:number) {
+    update ({keys , damage}:{keys:string[] , damage:number}) {
 
         this.move.up = keys.includes('w');
         this.move.right = keys.includes('d');
