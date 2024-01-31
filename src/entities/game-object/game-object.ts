@@ -23,13 +23,13 @@ export class GameObject {
     /* ----------------- */
 
     updateHealth () {
-        const {gettingDamage} = this.inputController.getInput() ;
+        const {gettingDamage} = this.inputController.getInputedData() ;
         this.health -= gettingDamage ;
     }
 
     update () {
 
-        const moveInput = this.inputController.getInput() ;
+        const moveInput = this.inputController.getInputedData() ;
         this.updateHealth();
         this.movement.updateDelta({...moveInput}) ;
         this.updatePosititon() ;

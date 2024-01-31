@@ -1,12 +1,14 @@
 import { ImpulseGenerator } from "../../features/impulse-generator/impulse-generator";
 import { KeyHandler } from "../../widgets/key-handler/key-handler";
+import { Enemy } from "../enemy/enemy";
 import { GameObject } from "../game-object/game-object";
 import { Player } from "../player/player";
 
 export class Game {
 
     private ctx:CanvasRenderingContext2D ;
-    private player:GameObject ;
+    private player:Player ;
+    private enemies:Enemy[] ;
     private keyHandler:KeyHandler ;
 
     /* ---------------------  */
@@ -28,6 +30,15 @@ export class Game {
         this.player.inputController.update({keys:[...this.keyHandler.getKeys()] , damage:isImpulseIs ? 1 : 0}) ;
         this.player.update();
 
+        /* enemies update */
+
+        for (const enemy of [...this.enemies]) {
+            enemy.inputController.update({keys:['d'] , damage:isImpulseIs ? 10 : 0});
+            enemy.update();
+        }
+
+        /* ============  */
+
     }
     
     render () {
@@ -39,8 +50,12 @@ export class Game {
         if(this.player.getIsInGame()) {
 
             const position = this.player.getPosition();
-
             this.renderRect(position.x , position.y , 50 , 20 , 'red');
+        }
+
+        for (const enemy of [...this.enemies]) {
+            const position = enemy.getPosition() ;
+            this.renderRect(position.x ,position.y , 60 , 25 , 'grey');
         }
 
         /* --------------------------- */
@@ -81,7 +96,7 @@ export class Game {
         this.ctx = ctx ;
         this.keyHandler = new KeyHandler() ;
         this.player = new Player({isInGame:true}) ;
-
+        this.enemies = [new Enemy()] ;
 
         /* impulse generator */
 

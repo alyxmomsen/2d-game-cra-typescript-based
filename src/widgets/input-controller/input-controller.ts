@@ -9,7 +9,7 @@ export class InputController {
     private attack:boolean ;
     private gettingDamage:number ;
 
-    getInput() {
+    getInputedData() {
 
         const {up , down , left , right } = this.move ;
         return {up , down , left , right , gettingDamage:this.gettingDamage} ;
