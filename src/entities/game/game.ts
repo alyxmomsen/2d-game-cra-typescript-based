@@ -24,7 +24,8 @@ export class Game {
         }
 
         /* this.player update */
-        this.player.inputController.update([...this.keyHandler.getKeys()] , isImpulseIs ? 10 : 0) ;
+        /* update input controller : get keys , get damage */
+        this.player.inputController.update([...this.keyHandler.getKeys()] , isImpulseIs ? 1 : 0) ;
         this.player.update();
 
     }
