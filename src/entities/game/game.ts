@@ -3,6 +3,7 @@ import { KeyHandler } from "../../widgets/key-handler/key-handler";
 import { Enemy } from "../enemy/enemy";
 import { GameObject } from "../game-object/game-object";
 import { Player } from "../player/player";
+import ToxicBox from "../toxic-box/toxic-box";
 
 export class Game {
 
@@ -10,7 +11,11 @@ export class Game {
     private player:Player ;
     private enemies:Enemy[] ;
     private keyHandler:KeyHandler ;
-    
+
+    /* play objects */
+
+    private toxicBox:ToxicBox[] ;
+    /* ============ */
 
     /* ---------------------  */
 
@@ -34,11 +39,16 @@ export class Game {
         /* enemies update */
 
         for (const enemy of [...this.enemies]) {
-            enemy.inputController.update({keys:['d'] , damage:isImpulseIs ? 10 : 0});
+            enemy.inputController.update({keys:[] , damage:isImpulseIs ? 10 : 0});
             enemy.update();
         }
 
         /* ============  */
+
+        for (const box of [...this.toxicBox]) {
+            box.inputController.update({keys:[] , damage:0});
+            box.update();
+        }
 
     }
     
@@ -48,15 +58,21 @@ export class Game {
 
         /* rendering the player */
 
+        for (const box of [...this.toxicBox]) {
+            const position = box.getPosition() ;
+            this.renderRect(position.x , position.y , 100 , 100 , '#aaa');
+        }
+
+        
+        for (const enemy of [...this.enemies]) {
+            const position = enemy.getPosition() ;
+            this.renderRect(position.x ,position.y , 60 , 25 , 'grey');
+        }
+        
         if(this.player.getIsInGame()) {
 
             const position = this.player.getPosition();
             this.renderRect(position.x , position.y , 50 , 20 , 'red');
-        }
-
-        for (const enemy of [...this.enemies]) {
-            const position = enemy.getPosition() ;
-            this.renderRect(position.x ,position.y , 60 , 25 , 'grey');
         }
 
         /* --------------------------- */
@@ -98,7 +114,11 @@ export class Game {
         this.keyHandler = new KeyHandler() ;
         this.player = new Player({isInGame:true}) ;
         this.enemies = [new Enemy()] ;
-
+        this.toxicBox = [] ;
+        
+        for (let i=0 ; i<10 ; i++) {
+            this.toxicBox.push(new ToxicBox());
+        }
         /* impulse generator */
 
         this.roomDamageImpulseGenerator = new ImpulseGenerator(1000);
