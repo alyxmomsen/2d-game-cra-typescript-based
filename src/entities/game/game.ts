@@ -31,15 +31,17 @@ export class Game {
 
         const objPos = {...object.getPosition()} ;
         const objDim = {...object.getDimensions()} ;
+        const objMovDelta = {...object.movement.getDelta()} ;
+
         const subjPos = {...subject.getPosition()} ;
         const subjDim = {...subject.getDimensions()} ;
 
         if(
             (
-                (objPos.x < subjPos.x + subjDim.width) && 
-                (objPos.x + objDim.width > subjPos.x) && 
-                (objPos.y < subjPos.y + subjDim.height) && 
-                (objPos.y + objDim.height > subjPos.y)
+                (objPos.x + objMovDelta.x < subjPos.x + subjDim.width) && 
+                (objPos.x + objMovDelta.x + objDim.width > subjPos.x) && 
+                (objPos.y + objMovDelta.y < subjPos.y + subjDim.height) && 
+                (objPos.y + objDim.height + objMovDelta.y > subjPos.y)
             )
                 
         ) {
@@ -68,7 +70,12 @@ export class Game {
             object.inputController.update({
                 keys:[...isPlayer ? this.keyHandler.getKeys() : []] , 
                 damage:isImpulseIs ? this.toxicBox.length * 0.1 : 0
-            })
+            }) ;
+
+            const moveInput = object.inputController.getInputedData() ;
+            object.updateHealth();
+            object.movement.updateDelta({...moveInput}) ;
+            // const movDelta = object.movement.getDelta();
 
             let isCollision = false ;
             for (const collisionSubject of [this.player , ...this.enemies , ...this.toxicBox]) {
@@ -86,6 +93,9 @@ export class Game {
             if(!isCollision) {
                 
                 object.update();
+            }
+            else {
+                object.movement.resetDelta();
             }
 
         }

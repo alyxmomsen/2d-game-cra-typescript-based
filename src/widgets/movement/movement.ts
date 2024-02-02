@@ -59,6 +59,11 @@ export class Movement {
         return { ...this.delta }
     }
 
+    resetDelta () {
+        this.delta.x = 0 ;
+        this.delta.y = 0 ;
+    }
+
     constructor () {
 
         this.delta = {x:0 , y:0} ;

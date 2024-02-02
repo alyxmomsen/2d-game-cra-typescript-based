@@ -1,13 +1,14 @@
 import { Dimensions, Position } from "../../shared/types/types";
 import { InputController } from "../../widgets/input-controller/input-controller";
 import { Movement } from "../../widgets/movement/movement";
+import GameObjectParent from "./game-object-getters-setters";
 
-export class GameObject {
+export class GameObject extends GameObjectParent {
 
     private isInGame:boolean ;
     private position:Position ;
     private dimensions:Dimensions ;
-    private movement:Movement;
+    readonly movement:Movement;
 
     /* stats */
 
@@ -29,9 +30,7 @@ export class GameObject {
 
     update () {
 
-        const moveInput = this.inputController.getInputedData() ;
-        this.updateHealth();
-        this.movement.updateDelta({...moveInput}) ;
+        
         this.updatePosititon() ;
     }
 
@@ -77,7 +76,7 @@ export class GameObject {
     // }
 
     constructor ({isInGame , position , dimensions }:{isInGame:boolean , position:Position , dimensions:Dimensions}) {
-        
+        super();
         this.dimensions = {...dimensions} ;
         this.position = {...position} ;
         this.isInGame = isInGame ;
