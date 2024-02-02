@@ -8,6 +8,7 @@ import ToxicBox from "../toxic-box/toxic-box";
 export class Game {
 
     private ctx:CanvasRenderingContext2D ;
+
     private player:Player ;
     private enemies:Enemy[] ;
     private keyHandler:KeyHandler ;
@@ -15,6 +16,7 @@ export class Game {
     /* play objects */
 
     private toxicBox:ToxicBox[] ;
+
     /* ============ */
 
     /* ---------------------  */
@@ -28,16 +30,20 @@ export class Game {
         let isImpulseIs = false ;
 
         if(this.roomDamageImpulseGenerator.get()) {
+
             isImpulseIs = true ;
         }
 
         /* this.player update */
         /* update input controller : get keys , get damage */
-        this.player.inputController.update({keys:[...this.keyHandler.getKeys()] , damage:isImpulseIs ? 1 : 0}) ;
-        this.player.update();
+
+        
+
+        this.player.inputController.update({keys:[...this.keyHandler.getKeys()] , damage:isImpulseIs ? this.toxicBox.length * 0.1 : 0}) ;
+        this.player.update() ;
 
         /* enemies update */
-
+        
         for (const enemy of [...this.enemies]) {
             enemy.inputController.update({keys:[] , damage:isImpulseIs ? 10 : 0});
             enemy.update();
@@ -116,7 +122,7 @@ export class Game {
         this.enemies = [new Enemy()] ;
         this.toxicBox = [] ;
         
-        for (let i=0 ; i<10 ; i++) {
+        for (let i=0 ; i<6 ; i++) {
             this.toxicBox.push(new ToxicBox());
         }
         /* impulse generator */
