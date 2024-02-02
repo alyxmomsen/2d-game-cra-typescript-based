@@ -9,12 +9,12 @@ export class Game {
 
     private ctx:CanvasRenderingContext2D ;
 
+    private keyHandler:KeyHandler ;
+    
+    /* play objects */
+    
     private player:Player ;
     private enemies:Enemy[] ;
-    private keyHandler:KeyHandler ;
-
-    /* play objects */
-
     private toxicBox:ToxicBox[] ;
 
     /* ============ */
@@ -24,6 +24,33 @@ export class Game {
     private roomDamageImpulseGenerator:ImpulseGenerator ; // test
 
     /* ---------------------- */
+
+    checkCollissionWith (object:GameObject , subject:GameObject) {
+
+        if(!object.getIsInGame() || !subject.getIsInGame()) return false 
+
+        const objPos = {...object.getPosition()} ;
+        const objDim = {...object.getDimensions()} ;
+        const subjPos = {...subject.getPosition()} ;
+        const subjDim = {...subject.getDimensions()} ;
+
+        if(
+            (
+                (objPos.x < subjPos.x + subjDim.width) && 
+                (objPos.x + objDim.width > subjPos.x) && 
+                (objPos.y < subjPos.y + subjDim.height) && 
+                (objPos.y + objDim.height > subjPos.y)
+            )
+                
+        ) {
+            return true ;
+        // alert();
+        }
+        else {
+            return false ;
+        }
+
+    }
     
     update () {
 
@@ -34,29 +61,41 @@ export class Game {
             isImpulseIs = true ;
         }
 
-        
+        for (const object of [this.player , ...this.enemies , ...this.toxicBox]) {
 
-        /* this.player update */
-        /* update input controller : get keys , get damage */
+            const isPlayer = object instanceof Player ;
 
+            object.inputController.update({
+                keys:[...isPlayer ? this.keyHandler.getKeys() : []] , 
+                damage:isImpulseIs ? this.toxicBox.length * 0.1 : 0
+            })
 
+            let isCollision = false ;
+            for (const collisionSubject of [this.player , ...this.enemies , ...this.toxicBox]) {
 
-        this.player.inputController.update({keys:[...this.keyHandler.getKeys()] , damage:isImpulseIs ? this.toxicBox.length * 0.1 : 0}) ;
-        this.player.update() ;
+                if(object === collisionSubject) continue ;
 
-        /* enemies update */
-        
-        for (const enemy of [...this.enemies]) {
-            enemy.inputController.update({keys:[] , damage:isImpulseIs ? 10 : 0});
-            enemy.update();
+                const collision = this.checkCollissionWith(object , collisionSubject) ;
+
+                if(collision) {
+                    isCollision = true ;
+                }
+
+            }
+
+            if(!isCollision) {
+                
+                object.update();
+            }
+
         }
 
-        /* ============  */
+        // this.player.inputController.update({keys:[...this.keyHandler.getKeys()] , damage:isImpulseIs ? this.toxicBox.length * 0.1 : 0}) ;
+        // this.player.update() ;
 
-        for (const box of [...this.toxicBox]) {
-            box.inputController.update({keys:[] , damage:0});
-            box.update();
-        }
+        
+        
+        
 
     }
     
@@ -68,19 +107,22 @@ export class Game {
 
         for (const box of [...this.toxicBox]) {
             const position = box.getPosition() ;
-            this.renderRect(position.x , position.y , 100 , 100 , '#aaa');
+            const dimensions = box.getDimensions();
+            this.renderRect(position.x , position.y , dimensions.width , dimensions.height , '#aaa');
         }
 
         
         for (const enemy of [...this.enemies]) {
             const position = enemy.getPosition() ;
-            this.renderRect(position.x ,position.y , 60 , 25 , 'grey');
+            const dimensions = enemy.getDimensions();
+            this.renderRect(position.x ,position.y , dimensions.width , dimensions.height , 'grey');
         }
         
         if(this.player.getIsInGame()) {
 
             const position = this.player.getPosition();
-            this.renderRect(position.x , position.y , 50 , 20 , 'red');
+            const dimensions = this.player.getDimensions();
+            this.renderRect(position.x , position.y , dimensions.width , dimensions.height , 'red');
         }
 
         /* --------------------------- */

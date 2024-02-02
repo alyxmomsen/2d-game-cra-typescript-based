@@ -51,6 +51,10 @@ export class GameObject {
         return this.health ;
     }
 
+    getDimensions () {
+        return {...this.dimensions} ;
+    }
+
     // private updateMovement () {
         
     // }
