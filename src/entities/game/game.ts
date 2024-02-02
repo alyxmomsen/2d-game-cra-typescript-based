@@ -34,10 +34,12 @@ export class Game {
             isImpulseIs = true ;
         }
 
+        
+
         /* this.player update */
         /* update input controller : get keys , get damage */
 
-        
+
 
         this.player.inputController.update({keys:[...this.keyHandler.getKeys()] , damage:isImpulseIs ? this.toxicBox.length * 0.1 : 0}) ;
         this.player.update() ;
