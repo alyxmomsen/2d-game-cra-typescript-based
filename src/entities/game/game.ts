@@ -10,6 +10,7 @@ export class Game {
     private player:Player ;
     private enemies:Enemy[] ;
     private keyHandler:KeyHandler ;
+    
 
     /* ---------------------  */
 
