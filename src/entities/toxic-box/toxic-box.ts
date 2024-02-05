@@ -3,6 +3,7 @@ import { GameObject } from "../game-object/game-object";
 
 export default class ToxicBox extends GameObject {
 
+    damage = 0.1 ;
 
     constructor(){
 
@@ -13,7 +14,8 @@ export default class ToxicBox extends GameObject {
                 x:Math.floor(Math.random() * 800) ,
                 y:Math.floor(Math.random() * 600)} ,
             dimensions:{width:rectSize , height:rectSize} ,
-            isInGame:true
+            isInGame:true , 
+            isCollideable:true ,
         });
     }
 }

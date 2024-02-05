@@ -2,56 +2,20 @@
 export class Movement {
 
     private delta:{x:number , y:number} ;
-    private delta_delta:number ;
+    // private impulse:{x:number , y:number} ;
 
+    updateDelta ({order}:{order:{up:boolean , down:boolean , left:boolean , right:boolean}}) {
 
-    updateDelta ({up ,down ,left ,right}:{up:boolean , down:boolean , left:boolean , right:boolean}) {
-
-        // const up = keys.includes('w') ;
-        // const down = keys.includes('s') ;
-        // const left = keys.includes('a') ;
-        // const right = keys.includes('d') ;
-
-        const handler = (axis:'x'|'y' , impulse:boolean , inccrementDirection:1|-1) => {
-            
-            const deltaDelta = 0.05 ;
-
-            if(impulse) {
-                
-                this.delta[axis] += deltaDelta * inccrementDirection  ;
-            }
-        }
-
-        const handlerIsNoImpulseByAxis = (axis:'x'|'y') => {
-
-            if(this.delta[axis] !== 0) {
-
-                this.delta[axis] = this.delta[axis] / this.delta_delta ;
-            }
-        }
+        const IMPULSE = 2.5 ;
         
-        if(!left && !right) {
-            
-            handlerIsNoImpulseByAxis('x');
-        }
-        else {
-            
-            handler('x' , right , 1);
-            handler('x' , left , -1);
-            
-        }
-        
-        if(!up && !down) {
-            
-            handlerIsNoImpulseByAxis('y');
-        }
-        else {
-            
-            handler('y' , down , 1);
-            handler('y' , up , -1);
-            
+        const impulse = {
+
+            x:(order.right ? IMPULSE : 0) + (order.left ? -IMPULSE : 0) ,
+            y:(order.down ? IMPULSE : 0) + (order.up ? -IMPULSE : 0) ,
         }
 
+        this.delta.x = impulse.x ;
+        this.delta.y = impulse.y ;
 
     }
 
@@ -65,8 +29,7 @@ export class Movement {
     }
 
     constructor () {
-
         this.delta = {x:0 , y:0} ;
-        this.delta_delta = 1.01 ;
+        // this.impulse = {x:0 , y:0} ;
     }
 }

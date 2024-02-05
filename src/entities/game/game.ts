@@ -1,4 +1,6 @@
 import { ImpulseGenerator } from "../../features/impulse-generator/impulse-generator";
+import Test from "../../features/test/test";
+import { Dimensions, Position } from "../../shared/types/types";
 import { KeyHandler } from "../../widgets/key-handler/key-handler";
 import { Enemy } from "../enemy/enemy";
 import { GameObject } from "../game-object/game-object";
@@ -8,14 +10,13 @@ import ToxicBox from "../toxic-box/toxic-box";
 export class Game {
 
     private ctx:CanvasRenderingContext2D ;
-
     private keyHandler:KeyHandler ;
     
     /* play objects */
     
     private player:Player ;
     private enemies:Enemy[] ;
-    private toxicBox:ToxicBox[] ;
+    private toxicBoxes:ToxicBox[] ;
 
     /* ============ */
 
@@ -25,102 +26,84 @@ export class Game {
 
     /* ---------------------- */
 
-    checkCollissionWith (object:GameObject , subject:GameObject) {
-
-        if(!object.getIsInGame() || !subject.getIsInGame()) return false 
-
-        const objPos = {...object.getPosition()} ;
-        const objDim = {...object.getDimensions()} ;
-        const objMovDelta = {...object.movement.getDelta()} ;
-
-        const subjPos = {...subject.getPosition()} ;
-        const subjDim = {...subject.getDimensions()} ;
-
-        if(
-            (
-                (objPos.x + objMovDelta.x < subjPos.x + subjDim.width) && 
-                (objPos.x + objMovDelta.x + objDim.width > subjPos.x) && 
-                (objPos.y + objMovDelta.y < subjPos.y + subjDim.height) && 
-                (objPos.y + objDim.height + objMovDelta.y > subjPos.y)
-            )
-                
-        ) {
-            return true ;
-        // alert();
-        }
-        else {
-            return false ;
-        }
-
-    }
     
     update () {
+        
+        /* compile objects to update */
+        const objectsToUpdate = [this.player , ...this.enemies , ...this.toxicBoxes] ;
 
-        let isImpulseIs = false ;
+        const roomDamageValue = this.toxicBoxes.reduce<number>((acc, obj) => acc + obj.damage , 0);
+        let roomDamage = this.roomDamageImpulseGenerator.get() ? roomDamageValue : 0 ;
+        
+        for (const object of objectsToUpdate) {
 
-        if(this.roomDamageImpulseGenerator.get()) {
+            const collisions = undefined ;
 
-            isImpulseIs = true ;
+            this.updateObjectPositionWith({object , subjects:objectsToUpdate.filter(elem => elem !== object)}) ;
+            
+            /*get damage by room */
+            object.updateHealthByValue(-roomDamage);
+            
         }
 
-        for (const object of [this.player , ...this.enemies , ...this.toxicBox]) {
+        
+    }
 
-            const isPlayer = object instanceof Player ;
+    checkObjectCollisionsWith () {
+        
+    }
 
-            object.inputController.update({
-                keys:[...isPlayer ? this.keyHandler.getKeys() : []] , 
-                damage:isImpulseIs ? this.toxicBox.length * 0.1 : 0
-            }) ;
+    updateObjectPositionWith({object , subjects}:{object:GameObject , subjects:GameObject[]}) {
+        const isPlayer = object instanceof Player ;
 
-            const moveInput = object.inputController.getInputedData() ;
-            object.updateHealth();
-            object.movement.updateDelta({...moveInput}) ;
-            // const movDelta = object.movement.getDelta();
+        object.inputController.update({keys: (isPlayer) ? [...this.keyHandler.getKeys()] : [] , damage:0}) ;
+        object.movement.updateDelta({order:{...object.inputController.getInputedData()}});
 
-            let isCollision = false ;
-            for (const collisionSubject of [this.player , ...this.enemies , ...this.toxicBox]) {
+        let collision = false ;
 
+        if(object.getIsCollideable() === true) {
+
+            for (const collisionSubject of subjects) {
+
+                if(collisionSubject.getIsCollideable() === false) continue ;
+                if(object.getIsInGame() === false) continue ;
                 if(object === collisionSubject) continue ;
 
-                const collision = this.checkCollissionWith(object , collisionSubject) ;
+                if(this.checkObjectCollissionWith(
+                        {position:object.calculateNextPosition() , dimensions:object.getDimensions()} ,
+                        {position:collisionSubject.getPosition() , dimensions:collisionSubject.getDimensions()}
+                    )
+                ) {
 
-                if(collision) {
-                    isCollision = true ;
+                    collision = true ;
+
                 }
-
             }
-
-            if(!isCollision) {
-                
-                object.update();
-            }
-            else {
-                object.movement.resetDelta();
-            }
-
         }
 
-        // this.player.inputController.update({keys:[...this.keyHandler.getKeys()] , damage:isImpulseIs ? this.toxicBox.length * 0.1 : 0}) ;
-        // this.player.update() ;
+        if(collision === false) {
+            object.updatePosititon() ;
+        }
+        else {
 
-        
-        
-        
+            object.movement.resetDelta();
 
+            console.log('collision');
+        }
     }
     
     render () {
         
         this.renderViewPort('#222');
-
+        
         /* rendering the player */
-
-        for (const box of [...this.toxicBox]) {
+        
+        for (const box of [...this.toxicBoxes]) {
             const position = box.getPosition() ;
             const dimensions = box.getDimensions();
             this.renderRect(position.x , position.y , dimensions.width , dimensions.height , '#aaa');
         }
-
+        
         
         for (const enemy of [...this.enemies]) {
             const position = enemy.getPosition() ;
@@ -134,24 +117,24 @@ export class Game {
             const dimensions = this.player.getDimensions();
             this.renderRect(position.x , position.y , dimensions.width , dimensions.height , 'red');
         }
-
+        
         /* --------------------------- */
-
+        
         this.renderPlayerStats();
-
+        
     }
     
     private renderViewPort (backgroundcolor:string) {
         
         const vw = 800 ;
         const vh = 600 ;
-    
+        
         this.ctx.fillStyle = backgroundcolor ;
         this.ctx.fillRect(0 , 0 , vw , vh );
     }
-
+    
     private renderRect (x:number , y:number , width:number , height:number , backgroundcolor:string) {
-
+        
         this.ctx.fillStyle = backgroundcolor ;
         this.ctx.fillRect(x , y , width , height);
     }
@@ -162,10 +145,29 @@ export class Game {
         const margin = 9 ;
         const padding = 9 ;
         const linesInterval = 19 ;
-
+        
         this.renderRect (margin , margin , size , size * 2 , '#6666') ;
         this.ctx.fillStyle = 'whitesmoke' ;
         this.ctx.fillText(`health: ${this.player.getHealth()}` , padding * 2 , padding * 2 * 2 ) ;
+    }
+    
+    checkObjectCollissionWith (
+        object:{position:Position , dimensions:Dimensions} , 
+        subject:{position:Position , dimensions:Dimensions}) {
+
+        if(
+            (
+                (object.position.x < subject.position.x + subject.dimensions.width) && 
+                (object.position.x + object.dimensions.width > subject.position.x) && 
+                (object.position.y < subject.position.y + subject.dimensions.height) && 
+                (object.position.y + object.dimensions.height > subject.position.y)
+            )                
+        ) {
+            return true ;
+        }
+        else {
+            return false ;
+        }
     }
 
     constructor (ctx:CanvasRenderingContext2D , viewPortDimensions:{vw:number , vh:number}) {
@@ -174,15 +176,15 @@ export class Game {
         this.keyHandler = new KeyHandler() ;
         this.player = new Player({isInGame:true}) ;
         this.enemies = [new Enemy()] ;
-        this.toxicBox = [] ;
+        this.toxicBoxes = [] ;
         
         for (let i=0 ; i<6 ; i++) {
-            this.toxicBox.push(new ToxicBox());
+            this.toxicBoxes.push(new ToxicBox());
         }
         /* impulse generator */
-
+        
         this.roomDamageImpulseGenerator = new ImpulseGenerator(1000);
-
+        
         /* ----------------- */
     }
 }

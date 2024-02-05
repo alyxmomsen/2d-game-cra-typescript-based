@@ -6,6 +6,7 @@ import GameObjectParent from "./game-object-getters-setters";
 export class GameObject extends GameObjectParent {
 
     private isInGame:boolean ;
+    private isCollideable:boolean ;
     private position:Position ;
     private dimensions:Dimensions ;
     readonly movement:Movement;
@@ -20,22 +21,34 @@ export class GameObject extends GameObjectParent {
     /* input controller */
 
     inputController:InputController ;
-
+    
     /* ----------------- */
+    
+    calculateNextPosition ():Position {
 
+        const position = this.position ;
+        const delta = this.movement.getDelta();
+
+        const calculatedPosition = {x:position.x + delta.x , y:position.y + delta.y} ;
+
+        return calculatedPosition ;
+    }
+    
     updateHealth () {
+
         const {gettingDamage} = this.inputController.getInputedData() ;
         this.health -= gettingDamage ;
     }
-
-    update () {
-
+    
+    updatePosititon () {
         
-        this.updatePosititon() ;
+        const delta = this.movement.getDelta();
+        this.position.x += delta.x ;
+        this.position.y += delta.y ;
     }
 
-    render () {
-
+    updateHealthByValue (value:number) {
+        this.health += value ;
     }
 
     getIsInGame () {
@@ -54,36 +67,27 @@ export class GameObject extends GameObjectParent {
         return {...this.dimensions} ;
     }
 
-    // private updateMovement () {
-        
-    // }
-
-    private updatePosititon () {
-
-        const delta = this.movement.getDelta();
-
-        this.position.x += delta.x ;
-        this.position.y += delta.y ;
-
+    getIsCollideable () {
+        return this.isCollideable ;
     }
 
-    updateHealthByValue (value:number) {
-        this.health += value ;
-    }
-
-    // getDelta () {
-    //     this.movement
-    // }
-
-    constructor ({isInGame , position , dimensions }:{isInGame:boolean , position:Position , dimensions:Dimensions}) {
+    constructor (
+        {isInGame , position , dimensions , isCollideable }:{
+            isInGame:boolean , 
+            position:Position , 
+            dimensions:Dimensions ,
+            isCollideable:boolean ,
+        }
+    ) {
         super();
-        this.dimensions = {...dimensions} ;
-        this.position = {...position} ;
+        this.isCollideable = isCollideable ;
         this.isInGame = isInGame ;
         this.movement = new Movement ();
-
+        
         /* stats */
-
+        
+        this.position = {...position} ;
+        this.dimensions = {...dimensions} ;
         this.health = 100 ;
         this.armor = 100 ;
 
