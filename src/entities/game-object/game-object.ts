@@ -6,13 +6,13 @@ import GameObjectParent from "./game-object-getters-setters";
 export class GameObject extends GameObjectParent {
 
     private isInGame:boolean ;
-    private isCollideable:boolean ;
-    private position:Position ;
-    private dimensions:Dimensions ;
+    private rigidBody:boolean ;
     readonly movement:Movement;
-
+    private dimensions:Dimensions ;
+    private position:Position ;
+    readonly kind:string ;
     /* stats */
-
+    
     private health:number ;
     private armor:number ; // experemental
 
@@ -67,22 +67,24 @@ export class GameObject extends GameObjectParent {
         return {...this.dimensions} ;
     }
 
-    getIsCollideable () {
-        return this.isCollideable ;
+    getRigidBody () {
+        return this.rigidBody ;
     }
 
     constructor (
-        {isInGame , position , dimensions , isCollideable }:{
+        {isInGame , position , dimensions , isCollideable , kind }:{
             isInGame:boolean , 
             position:Position , 
             dimensions:Dimensions ,
             isCollideable:boolean ,
+            kind:string ,
         }
     ) {
         super();
-        this.isCollideable = isCollideable ;
+        this.rigidBody = isCollideable ;
         this.isInGame = isInGame ;
         this.movement = new Movement ();
+        this.kind = kind ;
         
         /* stats */
         

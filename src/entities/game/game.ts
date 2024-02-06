@@ -30,66 +30,65 @@ export class Game {
     update () {
         
         /* compile objects to update */
-        const objectsToUpdate = [this.player , ...this.enemies , ...this.toxicBoxes] ;
+        const objectsToUpdate = [this.player/*   , ...this.enemies */, ...this.toxicBoxes] ;
 
+        /* calculate a damage of the room */
         const roomDamageValue = this.toxicBoxes.reduce<number>((acc, obj) => acc + obj.damage , 0);
         let roomDamage = this.roomDamageImpulseGenerator.get() ? roomDamageValue : 0 ;
         
-        for (const object of objectsToUpdate) {
+        for (const subject of objectsToUpdate) {
 
-            const collisions = undefined ;
+            const isPlayer = subject instanceof Player ;
+            /* get input orders */
+            subject.inputController.update({keys: (isPlayer) ? [...this.keyHandler.getKeys()] : [] , damage:0}) ;
+            /* update position delta */
+            subject.movement.updateDelta({order:{...subject.inputController.getInputedData()}});
 
-            this.updateObjectPositionWith({object , subjects:objectsToUpdate.filter(elem => elem !== object)}) ;
+            /* get collided GameObjects with the subj */
+            const collisionsWithSubj = this.checkSubjectCollisionsWith(subject , objectsToUpdate) ;
+
+            if(collisionsWithSubj.length) {
+                
+                /* handle collisions*/
+
+            }
+            else {
+                subject.updatePosititon();
+            }
             
             /*get damage by room */
-            object.updateHealthByValue(-roomDamage);
+            subject.updateHealthByValue(-roomDamage);
             
         }
 
         
     }
 
-    checkObjectCollisionsWith () {
-        
-    }
+    checkSubjectCollisionsWith (subject:GameObject , objects:GameObject[]):GameObject[] {
 
-    updateObjectPositionWith({object , subjects}:{object:GameObject , subjects:GameObject[]}) {
-        const isPlayer = object instanceof Player ;
+        let collisions:GameObject[] = [] ;
 
-        object.inputController.update({keys: (isPlayer) ? [...this.keyHandler.getKeys()] : [] , damage:0}) ;
-        object.movement.updateDelta({order:{...object.inputController.getInputedData()}});
+        for (const object of objects) {
 
-        let collision = false ;
-
-        if(object.getIsCollideable() === true) {
-
-            for (const collisionSubject of subjects) {
-
-                if(collisionSubject.getIsCollideable() === false) continue ;
-                if(object.getIsInGame() === false) continue ;
-                if(object === collisionSubject) continue ;
-
-                if(this.checkObjectCollissionWith(
-                        {position:object.calculateNextPosition() , dimensions:object.getDimensions()} ,
-                        {position:collisionSubject.getPosition() , dimensions:collisionSubject.getDimensions()}
-                    )
-                ) {
-
-                    collision = true ;
-
-                }
+            if(object.getRigidBody() === false) continue ;
+            if(object.getIsInGame() === false) continue ;
+            if(subject === object) {
+                // alert(); 
+                continue ;
+            }
+            // alert();
+            if(this.checkObjectCollissionWith(
+                    {position:subject.calculateNextPosition() , dimensions:subject.getDimensions()} ,
+                    {position:object.getPosition() , dimensions:object.getDimensions()}
+                )
+            ) {
+                // alert();
+                collisions.push(object)
             }
         }
 
-        if(collision === false) {
-            object.updatePosititon() ;
-        }
-        else {
+        return collisions ;
 
-            object.movement.resetDelta();
-
-            console.log('collision');
-        }
     }
     
     render () {
@@ -152,15 +151,15 @@ export class Game {
     }
     
     checkObjectCollissionWith (
-        object:{position:Position , dimensions:Dimensions} , 
-        subject:{position:Position , dimensions:Dimensions}) {
+        subject:{position:Position , dimensions:Dimensions} , 
+        object:{position:Position , dimensions:Dimensions}) {
 
         if(
             (
-                (object.position.x < subject.position.x + subject.dimensions.width) && 
-                (object.position.x + object.dimensions.width > subject.position.x) && 
-                (object.position.y < subject.position.y + subject.dimensions.height) && 
-                (object.position.y + object.dimensions.height > subject.position.y)
+                (subject.position.x < object.position.x + object.dimensions.width) && 
+                (subject.position.x + subject.dimensions.width > object.position.x) && 
+                (subject.position.y < object.position.y + object.dimensions.height) && 
+                (subject.position.y + subject.dimensions.height > object.position.y)
             )                
         ) {
             return true ;

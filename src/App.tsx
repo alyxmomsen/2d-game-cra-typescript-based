@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 import {
   createBrowserRouter,
@@ -14,7 +14,7 @@ function App() {
     <div className="App">
       <Router>
         <Routes>
-          <Route path='/' element={<div>foo bar</div>} />
+          <Route path='/' element={<div>foo <Link to={'/game'}>bar</Link></div>} />
           <Route path='/game' element={<GameCanvas />} />
         </Routes>
       </Router>
