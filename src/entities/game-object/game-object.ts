@@ -12,7 +12,7 @@ export class GameObject extends GameObjectParent {
     private position:Position ;
     readonly kind:string ;
     /* stats */
-    
+    private isAlive:boolean ;
     private health:number ;
     private armor:number ; // experemental
 
@@ -49,6 +49,9 @@ export class GameObject extends GameObjectParent {
 
     updateHealthByValue (value:number) {
         this.health += value ;
+        if(this.health <= 0) {
+            this.isAlive = false ;
+        }
     }
 
     getIsInGame () {
@@ -87,7 +90,7 @@ export class GameObject extends GameObjectParent {
         this.kind = kind ;
         
         /* stats */
-        
+        this.isAlive = true ;
         this.position = {...position} ;
         this.dimensions = {...dimensions} ;
         this.health = 100 ;

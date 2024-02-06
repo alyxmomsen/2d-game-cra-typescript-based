@@ -33,12 +33,15 @@ export class Game {
         const objectsToUpdate = [this.player/*   , ...this.enemies */, ...this.toxicBoxes] ;
 
         /* calculate a damage of the room */
-        const roomDamageValue = this.toxicBoxes.reduce<number>((acc, obj) => acc + obj.damage , 0);
-        let roomDamage = this.roomDamageImpulseGenerator.get() ? roomDamageValue : 0 ;
+        const toxicBoxesGivesDamageSumm = this.toxicBoxes.reduce<number>((acc, obj) => acc + obj.damage , 0);
+        let fromToxicBoxesDamage = this.roomDamageImpulseGenerator.get() ? toxicBoxesGivesDamageSumm : 0 ;
         
         for (const subject of objectsToUpdate) {
 
             const isPlayer = subject instanceof Player ;
+            /* -------------------------------------- */
+            /* get damage from toxic boxes */
+            subject.updateHealthByValue(-fromToxicBoxesDamage); // get damage and isAlive
             /* get input orders */
             subject.inputController.update({keys: (isPlayer) ? [...this.keyHandler.getKeys()] : [] , damage:0}) ;
             /* update position delta */
@@ -56,8 +59,7 @@ export class Game {
                 subject.updatePosititon();
             }
             
-            /*get damage by room */
-            subject.updateHealthByValue(-roomDamage);
+            
             
         }
 
