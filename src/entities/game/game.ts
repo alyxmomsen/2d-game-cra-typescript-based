@@ -43,7 +43,8 @@ export class Game {
             const isPlayer = subject instanceof Player ;
             /* -------------------------------------- */
             /* get damage from toxic boxes */
-            subject.updateHealthByValue(-toxicBoxDamage); // get damage and isAlive
+            subject.updateHealthByValue(isPlayer ? -toxicBoxDamage : 0); // get damage and isAlive
+            
             /* get input orders */
             subject.controller.input({keys: (isPlayer) ? [...this.keyHandler.getKeys()] : [] , damage:0}) ;
             /* update position delta */
@@ -61,13 +62,13 @@ export class Game {
                 for (const collisionaire of collisionaires) {
                     // console.log(collisionaire.kind);
 
-
                     /* handle collision */
 
                     if(subject.kind === 'player' && collisionaire.kind === 'toxic_box') {
                         
-                        console.log('toxic-box');
-                        collisionaire.killSwitch(true) ;
+                        collisionaire.updateHealthByValue(-1);
+                        // console.log('toxic-box');
+                        // collisionaire.killSwitch(true) ;
                         
                     }
 
@@ -144,12 +145,13 @@ export class Game {
             const position = box.getPosition() ;
             const dimensions = box.getDimensions();
             this.renderRect(position.x , position.y , dimensions.width , dimensions.height , '#aaa');
+            this.ctx.fillStyle = 'white' ;
+            this.ctx.fillText(`${box.getHealth()}` , position.x , position.y + 10);
         }
         
         
         for (const enemy of [...this.enemies]) {
 
-             
             const position = enemy.getPosition() ;
             const dimensions = enemy.getDimensions();
             this.renderRect(position.x ,position.y , dimensions.width , dimensions.height , 'grey');
@@ -192,7 +194,7 @@ export class Game {
         
         this.renderRect (margin , margin , size , size * 2 , '#6666') ;
         this.ctx.fillStyle = 'whitesmoke' ;
-        this.ctx.fillText(`health: ${this.player.getHealth()}` , padding * 2 , padding * 2 * 2 ) ;
+        this.ctx.fillText(`health: ${Math.floor(this.player.getHealth())}` , padding * 2 , padding * 2 * 2 ) ;
     }
     
     isCollission (
