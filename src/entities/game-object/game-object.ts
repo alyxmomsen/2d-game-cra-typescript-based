@@ -5,18 +5,18 @@ import GameObjectParent from "./game-object-getters-setters";
 
 export class GameObject extends GameObjectParent {
 
+    /* tech stats */
     private isInGame:boolean ;
     private rigidBody:boolean ;
     readonly movement:Movement;
     private dimensions:Dimensions ;
     private position:Position ;
     readonly kind:string ;
-    /* stats */
+    private margin:number ;
+    /* play stats */
     private isAlive:boolean ;
     private health:number ;
     private armor:number ; // experemental
-
-    /*  */
 
     /* input controller */
 
@@ -54,6 +54,14 @@ export class GameObject extends GameObjectParent {
         }
     }
 
+    killSwitch (to:boolean) {
+        this.isAlive = !to ;
+    }
+
+    checkIsAlive () {
+        return this.isAlive ;
+    }
+
     getIsInGame () {
         return this.isInGame ; 
     }
@@ -84,19 +92,19 @@ export class GameObject extends GameObjectParent {
         }
     ) {
         super();
+
+        this.margin = 50 ;
+
         this.rigidBody = rigidBody ;
         this.isInGame = isInGame ;
         this.movement = new Movement ();
         this.kind = kind ;
         
-        /* stats */
         this.isAlive = true ;
         this.position = {...position} ;
         this.dimensions = {...dimensions} ;
         this.health = 100 ;
         this.armor = 100 ;
-
-        /* ------ */
 
         this.controller = new InputController () ;
     }

@@ -32,15 +32,18 @@ export class Game {
         const objectsToUpdate = [this.player  , ...this.enemies, ...this.toxicBoxes] ;
 
         /* calculate a damage of the room */
-        const toxicBoxesGivesDamageSumm = this.toxicBoxes.reduce<number>((acc, obj) => acc + obj.damage , 0);
-        let fromToxicBoxesDamage = this.roomDamageImpulseGenerator.get() ? toxicBoxesGivesDamageSumm : 0 ;
+        const toxicBoxesGivesDamageSumm = this.toxicBoxes.reduce<number>((acc, obj) => {
+            return acc + (obj.checkIsAlive() ? obj.damage : 0) 
+        } , 0) ;
+
+        let toxicBoxDamage = this.roomDamageImpulseGenerator.get() ? toxicBoxesGivesDamageSumm : 0 ;
         
         for (const subject of objectsToUpdate) {
 
             const isPlayer = subject instanceof Player ;
             /* -------------------------------------- */
             /* get damage from toxic boxes */
-            subject.updateHealthByValue(-fromToxicBoxesDamage); // get damage and isAlive
+            subject.updateHealthByValue(-toxicBoxDamage); // get damage and isAlive
             /* get input orders */
             subject.controller.input({keys: (isPlayer) ? [...this.keyHandler.getKeys()] : [] , damage:0}) ;
             /* update position delta */
@@ -61,7 +64,12 @@ export class Game {
 
                     /* handle collision */
 
-                    
+                    if(subject.kind === 'player' && collisionaire.kind === 'toxic_box') {
+                        
+                        console.log('toxic-box');
+                        collisionaire.killSwitch(true) ;
+                        
+                    }
 
                     /* ---------------- */
 
@@ -101,6 +109,7 @@ export class Game {
 
             // if(object.getRigidBody() === false) continue ;
             // if(object.getIsInGame() === false) continue ;
+            if(!object.checkIsAlive()) continue ;
             if(subject === object) {
                 // alert(); 
                 continue ;
@@ -127,6 +136,11 @@ export class Game {
         /* rendering the player */
         
         for (const box of [...this.toxicBoxes]) {
+
+            if(!box.checkIsAlive()) {
+                continue ;
+            }
+
             const position = box.getPosition() ;
             const dimensions = box.getDimensions();
             this.renderRect(position.x , position.y , dimensions.width , dimensions.height , '#aaa');
@@ -134,6 +148,8 @@ export class Game {
         
         
         for (const enemy of [...this.enemies]) {
+
+             
             const position = enemy.getPosition() ;
             const dimensions = enemy.getDimensions();
             this.renderRect(position.x ,position.y , dimensions.width , dimensions.height , 'grey');
@@ -206,7 +222,7 @@ export class Game {
         this.enemies = [new Enemy()] ;
         this.toxicBoxes = [] ;
         
-        for (let i=0 ; i<6 ; i++) {
+        for (let i=0 ; i<10 ; i++) {
             this.toxicBoxes.push(new ToxicBox());
         }
         /* impulse generator */

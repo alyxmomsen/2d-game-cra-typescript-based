@@ -15,7 +15,7 @@ export default class ToxicBox extends GameObject {
             dimensions:{width:rectSize , height:rectSize} ,
             isInGame:true , 
             rigidBody:false ,
-            kind:'toxic-box' ,
+            kind:'toxic_box' ,
         });
     }
 }
