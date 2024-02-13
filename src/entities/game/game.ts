@@ -1,5 +1,4 @@
 import { ImpulseGenerator } from "../../features/impulse-generator/impulse-generator";
-import Test from "../../features/test/test";
 import { Dimensions, Position } from "../../shared/types/types";
 import { KeyHandler } from "../../widgets/key-handler/key-handler";
 import { Enemy } from "../enemy/enemy";
@@ -45,7 +44,7 @@ export class Game {
             /* get input orders */
             subject.inputController.update({keys: (isPlayer) ? [...this.keyHandler.getKeys()] : [] , damage:0}) ;
             /* update position delta */
-            subject.movement.updateDelta({order:{...subject.inputController.getInputedData()}});
+            subject.movement.updateVelocity({order:{...subject.inputController.getInputedData()}});
 
             /* get collided GameObjects with the subj */
             const collisionsWithSubj = this.checkSubjectCollisionsWith(subject , objectsToUpdate) ;

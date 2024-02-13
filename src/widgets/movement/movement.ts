@@ -6,7 +6,7 @@ export class Movement {
     private momentOfInnertia:{x:number , y:number} ;
 
 
-    updateDelta ({order}:{order:{up:boolean , down:boolean , left:boolean , right:boolean}}) {
+    updateVelocity ({order}:{order:{up:boolean , down:boolean , left:boolean , right:boolean}}) {
 
         const IMPULSE = 2.5 ;
         const COUNTERfORCE = 0.1 ;
