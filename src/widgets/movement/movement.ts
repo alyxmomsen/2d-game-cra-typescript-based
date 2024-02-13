@@ -1,20 +1,24 @@
+import { Position } from "../../shared/types/types";
 
 export class Movement {
+
+    private force = 2.5 ; // temp variable
 
     private velocity:{x:number , y:number} ;
     // private impulse:{x:number , y:number} ;
     private momentOfInnertia:{x:number , y:number} ;
 
 
+
     updateVelocity ({order}:{order:{up:boolean , down:boolean , left:boolean , right:boolean}}) {
 
-        const IMPULSE = 2.5 ;
+        // const IMPULSE = 2.5 ;
         const COUNTERfORCE = 0.1 ;
         
         const the_impulse = {
 
-            x:(order.right ? IMPULSE : 0) + (order.left ? -IMPULSE : 0) ,
-            y:(order.down ? IMPULSE : 0) + (order.up ? -IMPULSE : 0) ,
+            x:(order.right ? this.force : 0) + (order.left ? -this.force : 0) ,
+            y:(order.down ? this.force : 0) + (order.up ? -this.force : 0) ,
         }
 
         this.momentOfInnertia.x = (the_impulse.x + this.momentOfInnertia.x) / 2 ; //* ((this.momentOfInnertia.x * 0.1 + the_impulse.x) / 2)  ;
@@ -36,7 +40,6 @@ export class Movement {
 
     constructor () {
         this.velocity = {x:0 , y:0} ;
-        // this.impulse = {x:0 , y:0} ;
         this.momentOfInnertia = {x:0 , y:0} ;
     }
 }

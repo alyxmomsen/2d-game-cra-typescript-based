@@ -42,9 +42,9 @@ export class Game {
             /* get damage from toxic boxes */
             subject.updateHealthByValue(-fromToxicBoxesDamage); // get damage and isAlive
             /* get input orders */
-            subject.inputController.update({keys: (isPlayer) ? [...this.keyHandler.getKeys()] : [] , damage:0}) ;
+            subject.controller.input({keys: (isPlayer) ? [...this.keyHandler.getKeys()] : [] , damage:0}) ;
             /* update position delta */
-            subject.movement.updateVelocity({order:{...subject.inputController.getInputedData()}});
+            subject.movement.updateVelocity({order:{...subject.controller.getOrders()}});
 
             /* get collided GameObjects with the subj */
             const collisionsWithSubj = this.checkSubjectCollisionsWith(subject , objectsToUpdate) ;
@@ -71,14 +71,14 @@ export class Game {
 
         for (const object of objects) {
 
-            if(object.getRigidBody() === false) continue ;
-            if(object.getIsInGame() === false) continue ;
+            // if(object.getRigidBody() === false) continue ;
+            // if(object.getIsInGame() === false) continue ;
             if(subject === object) {
                 // alert(); 
                 continue ;
             }
             // alert();
-            if(this.checkObjectCollissionWith(
+            if(this.isCollission(
                     {position:subject.calculateNextPosition() , dimensions:subject.getDimensions()} ,
                     {position:object.getPosition() , dimensions:object.getDimensions()}
                 )
@@ -151,7 +151,7 @@ export class Game {
         this.ctx.fillText(`health: ${this.player.getHealth()}` , padding * 2 , padding * 2 * 2 ) ;
     }
     
-    checkObjectCollissionWith (
+    isCollission (
         subject:{position:Position , dimensions:Dimensions} , 
         object:{position:Position , dimensions:Dimensions}) {
 

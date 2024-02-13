@@ -9,13 +9,13 @@ export class InputController {
     private attack:boolean ;
     private gettingDamage:number ;
 
-    getInputedData() {
+    getOrders() {
 
         const {up , down , left , right } = this.move ;
         return {up , down , left , right , gettingDamage:this.gettingDamage} ;
     }
 
-    update ({keys , damage}:{keys:string[] , damage:number}) {
+    input ({keys , damage}:{keys:string[] , damage:number}) {
 
         this.move.up = keys.includes('w');
         this.move.right = keys.includes('d');

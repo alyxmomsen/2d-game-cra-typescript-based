@@ -20,7 +20,7 @@ export class GameObject extends GameObjectParent {
 
     /* input controller */
 
-    inputController:InputController ;
+    controller:InputController ;
     
     /* ----------------- */
     
@@ -36,7 +36,7 @@ export class GameObject extends GameObjectParent {
     
     updateHealth () {
 
-        const {gettingDamage} = this.inputController.getInputedData() ;
+        const {gettingDamage} = this.controller.getOrders() ;
         this.health -= gettingDamage ;
     }
     
@@ -98,6 +98,6 @@ export class GameObject extends GameObjectParent {
 
         /* ------ */
 
-        this.inputController = new InputController () ;
+        this.controller = new InputController () ;
     }
 }
