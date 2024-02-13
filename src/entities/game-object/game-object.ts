@@ -75,16 +75,16 @@ export class GameObject extends GameObjectParent {
     }
 
     constructor (
-        {isInGame , position , dimensions , isCollideable , kind }:{
+        {isInGame , position , dimensions , rigidBody , kind }:{
             isInGame:boolean , 
             position:Position , 
             dimensions:Dimensions ,
-            isCollideable:boolean ,
+            rigidBody:boolean ,
             kind:string ,
         }
     ) {
         super();
-        this.rigidBody = isCollideable ;
+        this.rigidBody = rigidBody ;
         this.isInGame = isInGame ;
         this.movement = new Movement ();
         this.kind = kind ;

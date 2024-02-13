@@ -14,7 +14,7 @@ export default class ToxicBox extends GameObject {
             position:randomPosition({posX:{min:200 , max:400} , posY:{min:200 , max:400}}) ,
             dimensions:{width:rectSize , height:rectSize} ,
             isInGame:true , 
-            isCollideable:true ,
+            rigidBody:false ,
             kind:'toxic-box' ,
         });
     }

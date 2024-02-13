@@ -51,13 +51,38 @@ export class Game {
 
             if(collisionaires.length) {
                 
+                /* temp */
+                let isSomeOneIsRigid = false ;
+                /* ---- */
 
                 for (const collisionaire of collisionaires) {
-                    console.log(collisionaire.kind);    
+                    // console.log(collisionaire.kind);
+
+
+                    /* handle collision */
+
+                    
+
+                    /* ---------------- */
+
+
+                    /* temp */
+                    if(collisionaire.getRigidBody()) {
+                        isSomeOneIsRigid = true ;
+                    }
+                    /* ---- */
                 }
+
+                /* temp */
+                if(!isSomeOneIsRigid) {
+
+                    subject.updatePosititon();
+                }
+                /* ----- */
 
             }
             else {
+
                 subject.updatePosititon();
             }
             
