@@ -1,35 +1,42 @@
 
 export class Movement {
 
-    private delta:{x:number , y:number} ;
+    private velocity:{x:number , y:number} ;
     // private impulse:{x:number , y:number} ;
+    private momentOfInnertia:{x:number , y:number} ;
+
 
     updateDelta ({order}:{order:{up:boolean , down:boolean , left:boolean , right:boolean}}) {
 
         const IMPULSE = 2.5 ;
+        const COUNTERfORCE = 0.1 ;
         
-        const impulse = {
+        const the_impulse = {
 
             x:(order.right ? IMPULSE : 0) + (order.left ? -IMPULSE : 0) ,
             y:(order.down ? IMPULSE : 0) + (order.up ? -IMPULSE : 0) ,
         }
 
-        this.delta.x = impulse.x ;
-        this.delta.y = impulse.y ;
+        this.momentOfInnertia.x = (the_impulse.x + this.momentOfInnertia.x) / 2 ; //* ((this.momentOfInnertia.x * 0.1 + the_impulse.x) / 2)  ;
+        this.momentOfInnertia.y = (the_impulse.y + this.momentOfInnertia.y) / 2 ;
+
+        this.velocity.x = this.momentOfInnertia.x ;
+        this.velocity.y = this.momentOfInnertia.y ;
 
     }
 
     getDelta () {
-        return { ...this.delta }
+        return { ...this.velocity }
     }
 
     resetDelta () {
-        this.delta.x = 0 ;
-        this.delta.y = 0 ;
+        this.velocity.x = 0 ;
+        this.velocity.y = 0 ;
     }
 
     constructor () {
-        this.delta = {x:0 , y:0} ;
+        this.velocity = {x:0 , y:0} ;
         // this.impulse = {x:0 , y:0} ;
+        this.momentOfInnertia = {x:0 , y:0} ;
     }
 }
