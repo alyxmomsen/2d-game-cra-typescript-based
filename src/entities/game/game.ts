@@ -29,7 +29,7 @@ export class Game {
     update () {
         
         /* compile objects to update */
-        const objectsToUpdate = [this.player/*   , ...this.enemies */, ...this.toxicBoxes] ;
+        const objectsToUpdate = [this.player  , ...this.enemies, ...this.toxicBoxes] ;
 
         /* calculate a damage of the room */
         const toxicBoxesGivesDamageSumm = this.toxicBoxes.reduce<number>((acc, obj) => acc + obj.damage , 0);
@@ -47,11 +47,14 @@ export class Game {
             subject.movement.updateVelocity({order:{...subject.controller.getOrders()}});
 
             /* get collided GameObjects with the subj */
-            const collisionsWithSubj = this.checkSubjectCollisionsWith(subject , objectsToUpdate) ;
+            const collisionaires = this.checkSubjectCollisionsWith(subject , objectsToUpdate) ;
 
-            if(collisionsWithSubj.length) {
+            if(collisionaires.length) {
                 
-                /* handle collisions*/
+
+                for (const collisionaire of collisionaires) {
+                    console.log(collisionaire.kind);    
+                }
 
             }
             else {
@@ -171,7 +174,7 @@ export class Game {
     }
 
     constructor (ctx:CanvasRenderingContext2D , viewPortDimensions:{vw:number , vh:number}) {
-        
+
         this.ctx = ctx ;
         this.keyHandler = new KeyHandler() ;
         this.player = new Player({isInGame:true}) ;

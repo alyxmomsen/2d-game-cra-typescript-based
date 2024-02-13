@@ -1,3 +1,4 @@
+import { randomPosition } from "../../shared/halpers/randomPosition";
 import { GameObject } from "../game-object/game-object";
 
 
@@ -10,9 +11,7 @@ export default class ToxicBox extends GameObject {
         const rectSize = 50 ;
 
         super({
-            position:{
-                x:Math.floor(Math.random() * (800 - (rectSize + 100))) + 100 ,
-                y:Math.floor(Math.random() * (600 - (rectSize + 100))) + 100} ,
+            position:randomPosition({posX:{min:200 , max:400} , posY:{min:200 , max:400}}) ,
             dimensions:{width:rectSize , height:rectSize} ,
             isInGame:true , 
             isCollideable:true ,

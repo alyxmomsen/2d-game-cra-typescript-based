@@ -31,7 +31,7 @@ const GameCanvas: React.FC = () => {
     }
   }, []);
 
-  return <canvas ref={canvasRef} width={800} height={600} />;
+  return <canvas ref={canvasRef} width={800 * 1.2} height={600 * 1.2} />;
 };
 
 export default GameCanvas;
