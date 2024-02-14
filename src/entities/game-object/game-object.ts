@@ -9,7 +9,6 @@ import sprite from "../../image.jpg";
 export class GameObject extends GameObjectParent {
 
     /* tech props */
-
     /* frame management */
     readonly sprite:HTMLImageElement ;
     readonly animator:Animator ;
