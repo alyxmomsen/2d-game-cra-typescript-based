@@ -6,10 +6,18 @@ import { GameObject } from "../game-object/game-object";
 import { Player } from "../player/player";
 import ToxicBox from "../toxic-box/toxic-box";
 
+
+
+
+
 export class Game {
+
+    // image:HTMLImageElement ;
 
     private ctx:CanvasRenderingContext2D ;
     private keyHandler:KeyHandler ;
+
+    private viewPortDimensions ;
     
     /* play objects */
     
@@ -135,6 +143,8 @@ export class Game {
         this.renderViewPort('#222');
         
         /* rendering the player */
+
+        
         
         for (const box of [...this.toxicBoxes]) {
 
@@ -145,7 +155,18 @@ export class Game {
             const position = box.getPosition() ;
             const dimensions = box.getDimensions();
             this.renderRect(position.x , position.y , dimensions.width , dimensions.height , '#aaa');
-            this.ctx.fillStyle = 'white' ;
+
+            box.updateFrame(1000/144);
+            const frame = box.getSpriteFrame();
+            this.ctx.drawImage(
+                box.sprite ,
+                frame.position.x,
+                frame.position.y ,
+                frame.dim.width,
+                frame.dim.height,
+                position.x , position.y , dimensions.width, dimensions.height
+                );
+            this.ctx.fillStyle = 'black' ;
             this.ctx.fillText(`${box.getHealth()}` , position.x , position.y + 10);
         }
         
@@ -155,6 +176,7 @@ export class Game {
             const position = enemy.getPosition() ;
             const dimensions = enemy.getDimensions();
             this.renderRect(position.x ,position.y , dimensions.width , dimensions.height , 'grey');
+            
         }
         
         if(this.player.getIsInGame()) {
@@ -172,8 +194,8 @@ export class Game {
     
     private renderViewPort (backgroundcolor:string) {
         
-        const vw = 800 ;
-        const vh = 600 ;
+        const vw = this.viewPortDimensions.vw ;
+        const vh = this.viewPortDimensions.vh ;
         
         this.ctx.fillStyle = backgroundcolor ;
         this.ctx.fillRect(0 , 0 , vw , vh );
@@ -218,7 +240,11 @@ export class Game {
 
     constructor (ctx:CanvasRenderingContext2D , viewPortDimensions:{vw:number , vh:number}) {
 
+        // this.image= new Image() ;
+        // this.image.src=img ;
+
         this.ctx = ctx ;
+        this.viewPortDimensions = viewPortDimensions ;
         this.keyHandler = new KeyHandler() ;
         this.player = new Player({isInGame:true}) ;
         this.enemies = [new Enemy()] ;

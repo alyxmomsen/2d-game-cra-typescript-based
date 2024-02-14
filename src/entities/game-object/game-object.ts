@@ -1,11 +1,22 @@
+import { Animator } from "../../shared/halpers/animator";
 import { Dimensions, Position } from "../../shared/types/types";
 import { InputController } from "../../widgets/input-controller/input-controller";
 import { Movement } from "../../widgets/movement/movement";
 import GameObjectParent from "./game-object-getters-setters";
 
+import sprite from "../../image.jpg";
+
 export class GameObject extends GameObjectParent {
 
-    /* tech stats */
+    /* tech props */
+
+    /* frame management */
+    readonly sprite:HTMLImageElement ;
+    readonly animator:Animator ;
+    private currentFramePosition:Position ;
+    private lastAnimatedTime:number ;
+    private frameDimensions:Dimensions ;
+    /* end -- frame management */
     private isInGame:boolean ;
     private rigidBody:boolean ;
     readonly movement:Movement;
@@ -13,7 +24,8 @@ export class GameObject extends GameObjectParent {
     private position:Position ;
     readonly kind:string ;
     private margin:number ;
-    /* play stats */
+    /* end -- tech props */
+    /* play props */
     private isAlive:boolean ;
     private health:number ;
     private armor:number ; // experemental
@@ -82,6 +94,23 @@ export class GameObject extends GameObjectParent {
         return this.rigidBody ;
     }
 
+    updateFrame(frameRate:number = 1000/60) {
+
+        const time = Date.now();
+        // let nextFrame = {}
+
+        if(time - this.lastAnimatedTime >= frameRate) {
+
+            this.currentFramePosition = this.animator.nextFrame();
+            this.lastAnimatedTime = time ;
+        }
+
+    }
+
+    getSpriteFrame () {
+        return {position:this.currentFramePosition , dim:this.frameDimensions} ;
+    }
+
     constructor (
         {isInGame , position , dimensions , rigidBody , kind }:{
             isInGame:boolean , 
@@ -107,5 +136,13 @@ export class GameObject extends GameObjectParent {
         this.armor = 100 ;
 
         this.controller = new InputController () ;
+
+        /* frame manager */
+        this.sprite = new Image();
+        this.sprite.src = sprite ;
+        this.animator = new Animator () ;
+        this.currentFramePosition = this.animator.nextFrame() ; // initial frame position
+        this.frameDimensions = {width:200 , height:200} ;
+        this.lastAnimatedTime = 0 ;
     }
 }
