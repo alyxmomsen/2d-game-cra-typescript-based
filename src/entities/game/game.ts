@@ -140,50 +140,33 @@ export class Game {
     
     render () {
         
-        this.renderViewPort('#222');
-        
-        /* rendering the player */
+        this.renderBackGround('#222');
 
-        
-        
+        /* render boxes */
         for (const box of [...this.toxicBoxes]) {
 
             if(!box.checkIsAlive()) {
                 continue ;
             }
-
-            const position = box.getPosition() ;
-            const dimensions = box.getDimensions();
-            this.renderRect(position.x , position.y , dimensions.width , dimensions.height , '#aaa');
-
-            box.updateFrame(1000/144);
-            const frame = box.getSpriteFrame();
-            this.ctx.drawImage(
-                box.sprite ,
-                frame.position.x,
-                frame.position.y ,
-                frame.dim.width,
-                frame.dim.height,
-                position.x , position.y , dimensions.width, dimensions.height
-                );
-            this.ctx.fillStyle = 'black' ;
-            this.ctx.fillText(`${box.getHealth()}` , position.x , position.y + 10);
+            this.renderGameObject(box);
         }
         
-        
+        /* render enemies */
         for (const enemy of [...this.enemies]) {
 
-            const position = enemy.getPosition() ;
-            const dimensions = enemy.getDimensions();
-            this.renderRect(position.x ,position.y , dimensions.width , dimensions.height , 'grey');
-            
+            if(!enemy.checkIsAlive()) {
+                continue ;
+            }
+            this.renderGameObject(enemy);
         }
         
+        /* render Player */
         if(this.player.getIsInGame()) {
 
-            const position = this.player.getPosition();
-            const dimensions = this.player.getDimensions();
-            this.renderRect(position.x , position.y , dimensions.width , dimensions.height , 'red');
+            this.renderGameObject(this.player);
+            // const position = this.player.getPosition();
+            // const dimensions = this.player.getDimensions();
+            // this.renderRect(position.x , position.y , dimensions.width , dimensions.height , 'red');
         }
         
         /* --------------------------- */
@@ -192,7 +175,7 @@ export class Game {
         
     }
     
-    private renderViewPort (backgroundcolor:string) {
+    private renderBackGround (backgroundcolor:string) {
         
         const vw = this.viewPortDimensions.vw ;
         const vh = this.viewPortDimensions.vh ;
@@ -204,7 +187,11 @@ export class Game {
     private renderRect (x:number , y:number , width:number , height:number , backgroundcolor:string) {
         
         this.ctx.fillStyle = backgroundcolor ;
-        this.ctx.fillRect(x , y , width , height);
+        // this.ctx.fillRect(x , y , width , height);
+        this.ctx.strokeStyle = 'whitesmoke' ;
+        this.ctx.strokeRect(x ,y , width , height);
+
+        // this.ctx.
     }
 
     private renderPlayerStats () {
@@ -216,7 +203,46 @@ export class Game {
         
         this.renderRect (margin , margin , size , size * 2 , '#6666') ;
         this.ctx.fillStyle = 'whitesmoke' ;
-        this.ctx.fillText(`health: ${Math.floor(this.player.getHealth())}` , padding * 2 , padding * 2 * 2 ) ;
+        this.ctx.font = 'bold 22px Arial' ;
+        this.ctx.fillText(`health: ${Math.floor(this.player.getHealth())}` , padding * 2 , padding * 2 * 2  ,) ;
+    }
+
+    renderGameObject (subject:GameObject) {
+
+        /* collider box the primitive */
+
+        const position = subject.getPosition() ;
+        const dimensions = subject.getDimensions();
+
+        if(subject.colliderBoxVisisbility) {
+
+            this.renderRect(position.x , position.y , dimensions.width , dimensions.height , '#aaa');
+
+            
+        }
+
+
+        /* sprite */
+
+        subject.spriteManager.update();
+        const sprite = subject.spriteManager.getFrame();
+        if(sprite !== null) {
+
+            const frame = sprite.getCurrentFrame();
+
+            this.ctx.drawImage(
+                frame.image ,
+                frame.position.x,
+                frame.position.y ,
+                frame.dimensions.width,
+                frame.dimensions.height,
+                position.x , position.y , dimensions.width, dimensions.width
+            );
+        }
+
+        this.ctx.fillStyle = 'whitesmoke' ;
+        this.ctx.fillText(`${Math.floor(subject.getHealth())}` , position.x , position.y + 10);
+
     }
     
     isCollission (
@@ -240,9 +266,6 @@ export class Game {
 
     constructor (ctx:CanvasRenderingContext2D , viewPortDimensions:{vw:number , vh:number}) {
 
-        // this.image= new Image() ;
-        // this.image.src=img ;
-
         this.ctx = ctx ;
         this.viewPortDimensions = viewPortDimensions ;
         this.keyHandler = new KeyHandler() ;
@@ -250,9 +273,10 @@ export class Game {
         this.enemies = [new Enemy()] ;
         this.toxicBoxes = [] ;
         
-        for (let i=0 ; i<10 ; i++) {
+        for (let i=0 ; i<40 ; i++) {
             this.toxicBoxes.push(new ToxicBox());
         }
+
         /* impulse generator */
         
         this.roomDamageImpulseGenerator = new ImpulseGenerator(1000);

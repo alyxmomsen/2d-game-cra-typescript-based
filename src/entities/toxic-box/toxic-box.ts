@@ -1,6 +1,7 @@
 import { randomPosition } from "../../shared/halpers/randomPosition";
 import { GameObject } from "../game-object/game-object";
 
+import imageSrc_main from "./../../toxic-box.png"
 
 export default class ToxicBox extends GameObject {
 
@@ -16,6 +17,7 @@ export default class ToxicBox extends GameObject {
             isInGame:true , 
             rigidBody:false ,
             kind:'toxic_box' ,
+            imageSrc_main ,
         });
     }
 }

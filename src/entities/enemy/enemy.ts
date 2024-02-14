@@ -9,7 +9,8 @@ export class Enemy extends GameObject {
             position:randomPosition({posX:{min:0 , max:600} , posY:{min:0 , max:600}}) ,
             dimensions:{width:50 , height:30} , 
             isInGame:true , 
-            rigidBody:true
+            rigidBody:true , 
+            imageSrc_main:undefined ,
         });
     }
 }

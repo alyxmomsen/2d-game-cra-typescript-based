@@ -10,6 +10,7 @@ export default class PrimitiveObstacle extends GameObject {
             isInGame:true ,
             kind:'primitive_obstacle' ,
             position:randomPosition({posX:{min:0 , max:800} , posY:{min:0 , max:800}}) ,
+            imageSrc_main:undefined ,
         });
     }
 }

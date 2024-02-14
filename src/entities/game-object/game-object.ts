@@ -4,18 +4,23 @@ import { InputController } from "../../widgets/input-controller/input-controller
 import { Movement } from "../../widgets/movement/movement";
 import GameObjectParent from "./game-object-getters-setters";
 
-import sprite from "../../image.jpg";
+import Sprite from "../../widgets/framesetmanagement/sprite";
+import SpriteManager from "../../widgets/framesetmanagement/sprite-manager";
+
+// import image_1 from "../../image.jpg";
 
 export class GameObject extends GameObjectParent {
 
     /* tech props */
+
     /* frame management */
-    readonly sprite:HTMLImageElement ;
-    readonly animator:Animator ;
-    private currentFramePosition:Position ;
-    private lastAnimatedTime:number ;
-    private frameDimensions:Dimensions ;
+
+    readonly spriteManager:SpriteManager;
+
     /* end -- frame management */
+
+    readonly colliderBoxVisisbility = true ;
+
     private isInGame:boolean ;
     private rigidBody:boolean ;
     readonly movement:Movement;
@@ -93,30 +98,31 @@ export class GameObject extends GameObjectParent {
         return this.rigidBody ;
     }
 
-    updateFrame(frameRate:number = 1000/60) {
+    // updateFrame(frameRate:number = 1000/60) {
 
-        const time = Date.now();
-        // let nextFrame = {}
+    //     const time = Date.now();
+    //     // let nextFrame = {}
 
-        if(time - this.lastAnimatedTime >= frameRate) {
+    //     if(time - this.lastAnimatedTime >= frameRate) {
 
-            this.currentFramePosition = this.animator.nextFrame();
-            this.lastAnimatedTime = time ;
-        }
+    //         this.currentFramePosition = this.animator.nextFrame();
+    //         this.lastAnimatedTime = time ;
+    //     }
 
-    }
+    // }
 
-    getSpriteFrame () {
-        return {position:this.currentFramePosition , dim:this.frameDimensions} ;
-    }
+    // getSpriteFrame () {
+    //     return {position:this.currentFramePosition , dim:this.frameDimensions} ;
+    // }
 
     constructor (
-        {isInGame , position , dimensions , rigidBody , kind }:{
+        {isInGame , position , dimensions , rigidBody , kind , imageSrc_main }:{
             isInGame:boolean , 
             position:Position , 
             dimensions:Dimensions ,
             rigidBody:boolean ,
             kind:string ,
+            imageSrc_main:string|undefined ,
         }
     ) {
         super();
@@ -137,11 +143,16 @@ export class GameObject extends GameObjectParent {
         this.controller = new InputController () ;
 
         /* frame manager */
-        this.sprite = new Image();
-        this.sprite.src = sprite ;
-        this.animator = new Animator () ;
-        this.currentFramePosition = this.animator.nextFrame() ; // initial frame position
-        this.frameDimensions = {width:200 , height:200} ;
-        this.lastAnimatedTime = 0 ;
+
+        const sprite_1 = new Image() ;
+        sprite_1.src = imageSrc_main ? imageSrc_main : '' ;
+
+        console.log(sprite_1);
+
+        this.spriteManager  = new SpriteManager() ;
+        this.spriteManager.add(new Sprite(sprite_1 , {width:1024 , height:1024} , {x:0 , y:0}));
+
+
+
     }
 }
