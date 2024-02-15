@@ -9,7 +9,14 @@ const GameCanvas: React.FC = () => {
     const canvas = canvasRef.current;
     if (canvas) {
       
+      // const gl = canvas.getContext("webgl");
+
+      // if(gl) {
+      //   alert();
+      // }
         const ctx = canvas.getContext('2d');
+
+
 
         if(ctx) {
 

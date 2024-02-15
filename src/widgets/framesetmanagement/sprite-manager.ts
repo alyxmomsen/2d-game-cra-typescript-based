@@ -8,7 +8,7 @@ export default class SpriteManager {
     private sprites:Sprite[] ;
     private currentSpriteID:number|undefined ;
 
-    add (spriteSet:Sprite) {
+    push (spriteSet:Sprite) {
         this.sprites = [...this.sprites , spriteSet] ; /// its need check for repeat of if the same
 
         this.setSpriteID(0); // this is HARDCODE

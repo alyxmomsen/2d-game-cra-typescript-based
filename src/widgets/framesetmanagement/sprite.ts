@@ -12,7 +12,6 @@ export default class Sprite {
     private currentFrame:Position; 
     private firstFramePosition:Position = {x:0 , y:0};
 
-
     updateToNextPosition () {
         
         if(this.currentFrame.x + this.stepByX > 200 || this.currentFrame.y + this.stepByY > 200 ) {

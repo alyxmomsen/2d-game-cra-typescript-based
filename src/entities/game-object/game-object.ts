@@ -19,7 +19,7 @@ export class GameObject extends GameObjectParent {
 
     /* end -- frame management */
 
-    readonly colliderBoxVisisbility = true ;
+    readonly colliderBoxVisisbility = true ; // game-object`s primitive 
 
     private isInGame:boolean ;
     private rigidBody:boolean ;
@@ -116,13 +116,14 @@ export class GameObject extends GameObjectParent {
     // }
 
     constructor (
-        {isInGame , position , dimensions , rigidBody , kind , imageSrc_main }:{
+        {isInGame , position , dimensions , rigidBody , kind , sprite /* imageSrc_main */ }:{
             isInGame:boolean , 
             position:Position , 
             dimensions:Dimensions ,
             rigidBody:boolean ,
             kind:string ,
-            imageSrc_main:string|undefined ,
+            // imageSrc_main:string|undefined ,
+            sprite:Sprite ,
         }
     ) {
         super();
@@ -144,13 +145,13 @@ export class GameObject extends GameObjectParent {
 
         /* frame manager */
 
-        const sprite_1 = new Image() ;
-        sprite_1.src = imageSrc_main ? imageSrc_main : '' ;
+        // const sprite_1 = new Image() ;
+        // sprite_1.src = imageSrc_main ? imageSrc_main : '' ;
 
-        console.log(sprite_1);
+        // console.log(sprite_1);
 
         this.spriteManager  = new SpriteManager() ;
-        this.spriteManager.add(new Sprite(sprite_1 , {width:1024 , height:1024} , {x:0 , y:0}));
+        this.spriteManager.push(sprite);
 
 
 

@@ -209,18 +209,10 @@ export class Game {
 
     renderGameObject (subject:GameObject) {
 
-        /* collider box the primitive */
+        
 
         const position = subject.getPosition() ;
         const dimensions = subject.getDimensions();
-
-        if(subject.colliderBoxVisisbility) {
-
-            this.renderRect(position.x , position.y , dimensions.width , dimensions.height , '#aaa');
-
-            
-        }
-
 
         /* sprite */
 
@@ -230,15 +222,26 @@ export class Game {
 
             const frame = sprite.getCurrentFrame();
 
+            const calc = dimensions.width - dimensions.height ;
+            
             this.ctx.drawImage(
                 frame.image ,
                 frame.position.x,
                 frame.position.y ,
                 frame.dimensions.width,
                 frame.dimensions.height,
-                position.x , position.y , dimensions.width, dimensions.width
+                position.x , position.y - (calc > 0 ? calc : 0) , dimensions.width, dimensions.width
             );
         }
+
+        /* collider box the primitive */
+
+        if(subject.colliderBoxVisisbility) {
+
+            this.renderRect(position.x , position.y , dimensions.width , dimensions.height , '#aaa');
+        }
+
+
 
         this.ctx.fillStyle = 'whitesmoke' ;
         this.ctx.fillText(`${Math.floor(subject.getHealth())}` , position.x , position.y + 10);
@@ -281,6 +284,6 @@ export class Game {
         
         this.roomDamageImpulseGenerator = new ImpulseGenerator(1000);
         
-        /* ----------------- */
+        
     }
 }
