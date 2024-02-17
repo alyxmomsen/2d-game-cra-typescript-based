@@ -3,7 +3,7 @@ import Sprite from "../../widgets/framesetmanagement/sprite";
 import { GameObject } from "../game-object/game-object";
 
 import sprite_main from "./../../enemy.png" ;
-import sprite_run from "./../../../sprites/Knight/Run.png" ;
+import sprite_run from "./../../sprites/Musketeer/Run.png" ;
 
 export class Enemy extends GameObject {
     
@@ -12,26 +12,36 @@ export class Enemy extends GameObject {
         const img = new Image() ;
         img.src = sprite_run ;
         /* ----------------------- */
-        const relativePositionX = 32 ;
-        const relativePositionY = 64 ;
+        const frameRelativePositionX = 29 ;
+        const frameRelativePositionY = 55 ;
         const framePositionDistanceByX = 128 ;
+        /* ----------------------- */
+        const objectProportions = {x:1 , y:1.8} ;
+        const frameProportions = {x:1 , y:2} ;
+        const gameobjectSize = 65 ;
+        const frameSourceSize = 42 ;
+        const frameRenderSize = 81 ;
         /* ----------------------- */
         super({
             kind:'enemy' ,
             position:randomPosition({posX:{min:0 , max:600} , posY:{min:0 , max:600}}) ,
-            dimensions:{width:50 , height:30} , 
+            dimensions:{width:objectProportions.x * gameobjectSize , height:objectProportions.y * gameobjectSize} ,
             isInGame:true , 
             rigidBody:true , 
             // imageSrc_main:sprite_main ,
-            sprite:new Sprite(img , {width:1200 , height:1450} , [
-                {x:framePositionDistanceByX * 0 + relativePositionX , y:0 + relativePositionY} , 
-                {x:framePositionDistanceByX * 1 + relativePositionX , y:0 + relativePositionY} , 
-                {x:framePositionDistanceByX * 2 + relativePositionX , y:0 + relativePositionY} , 
-                {x:framePositionDistanceByX * 3 + relativePositionX , y:0 + relativePositionY} , 
-                {x:framePositionDistanceByX * 4 + relativePositionX , y:0 + relativePositionY} , 
-                {x:framePositionDistanceByX * 5 + relativePositionX , y:0 + relativePositionY} , 
-                {x:framePositionDistanceByX * 6 + relativePositionX , y:0 + relativePositionY}
-            ]) ,
+            sprite:new Sprite(
+                img , 
+                {width:frameProportions.x * frameSourceSize , height:frameProportions.y * frameSourceSize} , 
+                {width:frameProportions.x * frameRenderSize , height:frameProportions.y * frameRenderSize} ,
+                [
+                    {x:framePositionDistanceByX * 0 + frameRelativePositionX , y:0 + frameRelativePositionY} , 
+                    {x:framePositionDistanceByX * 1 + frameRelativePositionX , y:0 + frameRelativePositionY} , 
+                    {x:framePositionDistanceByX * 2 + frameRelativePositionX , y:0 + frameRelativePositionY} , 
+                    {x:framePositionDistanceByX * 3 + frameRelativePositionX , y:0 + frameRelativePositionY} , 
+                    {x:framePositionDistanceByX * 4 + frameRelativePositionX , y:0 + frameRelativePositionY} , 
+                    {x:framePositionDistanceByX * 5 + frameRelativePositionX , y:0 + frameRelativePositionY} , 
+                    {x:framePositionDistanceByX * 6 + frameRelativePositionX , y:0 + frameRelativePositionY}
+                ]) ,
         });
     }
 }

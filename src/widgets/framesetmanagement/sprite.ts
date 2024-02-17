@@ -40,7 +40,8 @@ export default class Sprite {
     private type:'main' = 'main' ;
     private image:HTMLImageElement ;
 
-    private frameDimensions:Dimensions ;
+    private frameSourceDimensions:Dimensions ;
+    private frameRenderingDimensions:Dimensions ;
     private currentFrame:Position|null; 
 
     private frameSheet:FrameSheet ;
@@ -60,7 +61,8 @@ export default class Sprite {
             return {
                 image:this.image ,
                 position:this.currentFrame ,
-                dimensions:this.frameDimensions , 
+                dimensions:this.frameSourceDimensions , 
+                renderDimensions:this.frameRenderingDimensions ,
             }
         }
         else {
@@ -69,11 +71,12 @@ export default class Sprite {
 
     }
 
-    constructor (image:HTMLImageElement , frameDimensions:Dimensions /* , frameStepRate:{x:number , y:number} */ , frameSet:Position[]) {
+    constructor (image:HTMLImageElement , frameSourceDimensions:Dimensions , frameRenderingDimensions:Dimensions , frameSet:Position[]) {
         this.image = image ;
-        this.frameDimensions = frameDimensions ;
+        this.frameSourceDimensions = frameSourceDimensions ;
         this.currentFrame = {x:0 , y:0} ;
         this.frameSheet = new FrameSheet(frameSet) ;
+        this.frameRenderingDimensions = frameRenderingDimensions ;
 
     }
 }

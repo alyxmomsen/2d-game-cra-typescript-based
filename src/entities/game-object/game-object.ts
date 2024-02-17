@@ -1,11 +1,11 @@
 import { Animator } from "../../shared/halpers/animator";
 import { Dimensions, Position } from "../../shared/types/types";
 import { InputController } from "../../widgets/input-controller/input-controller";
-import { Movement } from "../../widgets/movement/movement";
-import GameObjectParent from "./game-object-getters-setters";
+import { Movement } from "../../widgets/movement/movement" ;
+import GameObjectParent from "./game-object-getters-setters" ;
 
-import Sprite from "../../widgets/framesetmanagement/sprite";
-import SpriteManager from "../../widgets/framesetmanagement/sprite-manager";
+import Sprite from "../../widgets/framesetmanagement/sprite" ;
+import SpriteManager from "../../widgets/framesetmanagement/sprite-manager" ;
 
 // import image_1 from "../../image.jpg";
 
