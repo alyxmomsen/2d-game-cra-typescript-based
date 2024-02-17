@@ -11,14 +11,26 @@ export class Player extends GameObject {
 
         const img = new Image() ;
         img.src = sprite_run ;
-        const n = 32 ;
-        const n2 = 64 ;
+        /* ----------------------- */
+        const relativePositionX = 32 ;
+        const relativePositionY = 64 ;
+        const framePositionDistanceByX = 128 ;
+        /* ----------------------- */
         super({
             isInGame , position:{x:0 , y:0} , 
             dimensions:{width:50 , height:50} , 
             rigidBody:true ,kind:'player' , 
             // imageSrc_main:sprite_main ,
-            sprite:new Sprite(img , {width:64 , height:64}/*  , {x:0 , y:0} */ , [{x:0 + n , y:0 + n2} , {x:128 * 1 + n , y:0 + n2} , {x:128 * 2 + n , y:0 + n2} , {x:128 * 3 + n , y:0 + n2} , {x:128 * 4 + n , y:0 + n2} , {x:128 * 5 + n , y:0 + n2} , {x:128 * 6 + n , y:0 + n2}]) ,
+            sprite:new Sprite(img , {width:64 , height:64} , 
+                [
+                    {x:framePositionDistanceByX * 0 + relativePositionX , y:0 + relativePositionY} , 
+                    {x:framePositionDistanceByX * 1 + relativePositionX , y:0 + relativePositionY} , 
+                    {x:framePositionDistanceByX * 2 + relativePositionX , y:0 + relativePositionY} , 
+                    {x:framePositionDistanceByX * 3 + relativePositionX , y:0 + relativePositionY} , 
+                    {x:framePositionDistanceByX * 4 + relativePositionX , y:0 + relativePositionY} , 
+                    {x:framePositionDistanceByX * 5 + relativePositionX , y:0 + relativePositionY} , 
+                    {x:framePositionDistanceByX * 6 + relativePositionX , y:0 + relativePositionY}
+                ]) ,
         });
 
     }

@@ -11,16 +11,9 @@ import SpriteManager from "../../widgets/framesetmanagement/sprite-manager";
 
 export class GameObject extends GameObjectParent {
 
-    /* tech props */
-
-    /* frame management */
-
+    // private status:'stand'|'move';
     readonly spriteManager:SpriteManager;
-
-    /* end -- frame management */
-
     readonly colliderBoxVisisbility = false ; // game-object`s primitive 
-
     private isInGame:boolean ;
     private rigidBody:boolean ;
     readonly movement:Movement;
@@ -28,8 +21,6 @@ export class GameObject extends GameObjectParent {
     private position:Position ;
     readonly kind:string ;
     private margin:number ;
-    /* end -- tech props */
-    /* play props */
     private isAlive:boolean ;
     private health:number ;
     private armor:number ; // experemental
