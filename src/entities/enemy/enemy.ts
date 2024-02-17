@@ -18,7 +18,7 @@ export class Enemy extends GameObject {
             isInGame:true , 
             rigidBody:true , 
             // imageSrc_main:sprite_main ,
-            sprite:new Sprite(img , {width:1200 , height:1450} , {x:0 , y:0}) ,
+            sprite:new Sprite(img , {width:1200 , height:1450} /* , {x:0 , y:0} */ , [{x:0 , y:0}]) ,
         });
     }
 }

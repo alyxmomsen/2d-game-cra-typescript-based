@@ -7,9 +7,6 @@ import { Player } from "../player/player";
 import ToxicBox from "../toxic-box/toxic-box";
 
 
-
-
-
 export class Game {
 
     // image:HTMLImageElement ;
@@ -209,28 +206,24 @@ export class Game {
 
     renderGameObject (subject:GameObject) {
 
-        
-
         const position = subject.getPosition() ;
         const dimensions = subject.getDimensions();
 
         /* sprite */
 
         subject.spriteManager.update();
-        const sprite = subject.spriteManager.getFrame();
-        if(sprite !== null) {
+        const frame = subject.spriteManager.getFrame();
 
-            const frame = sprite.getCurrentFrame();
-
-            const calc = dimensions.width - dimensions.height ;
+        
+        if(frame !== null) {
             
             this.ctx.drawImage(
                 frame.image ,
-                frame.position.x,
+                frame.position.x ,
                 frame.position.y ,
                 frame.dimensions.width,
                 frame.dimensions.height,
-                position.x , position.y - (calc > 0 ? calc : 0) , dimensions.width, dimensions.width
+                position.x , position.y , dimensions.width, dimensions.width
             );
         }
 

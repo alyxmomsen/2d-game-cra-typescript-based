@@ -19,7 +19,7 @@ export class GameObject extends GameObjectParent {
 
     /* end -- frame management */
 
-    readonly colliderBoxVisisbility = true ; // game-object`s primitive 
+    readonly colliderBoxVisisbility = false ; // game-object`s primitive 
 
     private isInGame:boolean ;
     private rigidBody:boolean ;

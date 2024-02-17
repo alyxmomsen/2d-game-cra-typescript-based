@@ -2,49 +2,78 @@ import { runInThisContext } from "vm";
 import { Dimensions, Position } from "../../shared/types/types";
 
 
+class FrameSheet {
+
+    private frames:Position[] ;
+    private frameID:number|undefined ;
+
+    next() {
+
+        if(this.frames.length && this.frameID !== undefined) {
+
+            this.frameID = this.frameID + 1 < this.frames.length ? ++this.frameID : 0 ;
+            return this.frames[this.frameID] ;
+        }
+        else {
+            return null ;
+        }
+
+    }
+
+    
+
+    constructor (frames:Position[]) {
+        this.frames = frames ;
+
+        if(frames.length) {
+            this.frameID = 0 ;
+        }
+        else {
+            this.frameID = undefined ;
+        }
+
+    }
+}
+
 export default class Sprite {
 
     private type:'main' = 'main' ;
     private image:HTMLImageElement ;
-    private stepByX:number = 2 ;
-    private stepByY:number = 0 ;
+
     private frameDimensions:Dimensions ;
-    private currentFrame:Position; 
-    private firstFramePosition:Position = {x:0 , y:0};
+    private currentFrame:Position|null; 
+
+    private frameSheet:FrameSheet ;
+    private currentFrameSheetID:number|undefined ;
 
     updateToNextPosition () {
-        
-        if(this.currentFrame.x + this.stepByX > 200 || this.currentFrame.y + this.stepByY > 200 ) {
-            this.currentFrame.x = 0 ;
-            this.currentFrame.y = 0 ;
-        }
-        else {
-            this.currentFrame.x += this.stepByX ;
-            this.currentFrame.y += this.stepByY ;
-        }
 
-        // console.log(this.currentFrame.x);
+        this.currentFrame = this.frameSheet.next();
+        // console.log(this.currentFrame?.x);
 
     }
 
     getCurrentFrame() {
 
-        // console.log(this.image);
+        if(this.currentFrame) {
 
-        return {
-            image:this.image ,
-            position:this.currentFrame ,
-            dimensions:this.frameDimensions , 
+            return {
+                image:this.image ,
+                position:this.currentFrame ,
+                dimensions:this.frameDimensions , 
+            }
         }
+        else {
+            return null ;
+        }
+
     }
 
-    constructor (image:HTMLImageElement , frameDimensions:Dimensions , frameStepRate:{x:number , y:number}) {
+    constructor (image:HTMLImageElement , frameDimensions:Dimensions /* , frameStepRate:{x:number , y:number} */ , frameSet:Position[]) {
         this.image = image ;
         this.frameDimensions = frameDimensions ;
-        this.stepByX = frameStepRate.x ;
-        this.stepByY = frameStepRate.y ;
-        // this.firstFramePosition = {x:0 , y:0};
-        this.currentFrame = this.firstFramePosition;
-        
+        this.currentFrame = {x:0 , y:0} ;
+        this.frameSheet = new FrameSheet(frameSet) ;
+
     }
 }

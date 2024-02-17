@@ -3,7 +3,7 @@ import Sprite from "./sprite";
 
 export default class SpriteManager {
 
-    private frameRate:number = 1000 / 90 ;
+    private frameRate:number = 1000 / 16 ;
     private lastAnimatedTime:number ;
     private sprites:Sprite[] ;
     private currentSpriteID:number|undefined ;
@@ -20,7 +20,7 @@ export default class SpriteManager {
 
         if(this.currentSpriteID !== undefined) {
             
-            return this.sprites[this.currentSpriteID] ;
+            return this.sprites[this.currentSpriteID].getCurrentFrame() ;
         }
         else {
 
@@ -29,7 +29,7 @@ export default class SpriteManager {
             если фреймсет (спрайт) не установлен, но 
             при этом фреймсет лист имеет содержимое,
             то устанавливаем Default значение 0
-            пока что , это HARDCODE
+            пока что , это HARD-CODE
             
             */
 
@@ -54,12 +54,11 @@ export default class SpriteManager {
         if(time - this.lastAnimatedTime >= this.frameRate) {
 
             if(this.currentSpriteID !== undefined) {
-
-                this.sprites[this.currentSpriteID].updateToNextPosition();
+                // console.log('tick') ;
+                this.sprites[this.currentSpriteID].updateToNextPosition() ;
             }
-            
-            // this.sprites[0].updateToNextPosition(); // HARDCODE !!!!!!
 
+            this.lastAnimatedTime = time ;
 
         }
 

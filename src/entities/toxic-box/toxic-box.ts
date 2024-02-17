@@ -22,7 +22,7 @@ export default class ToxicBox extends GameObject {
             rigidBody:false ,
             kind:'toxic_box' ,
             // imageSrc_main ,
-            sprite:new Sprite(img , {width:1000 , height:1000} , {x:0 , y:0}) ,
+            sprite:new Sprite(img , {width:1000 , height:1000} /* , {x:0 , y:0} */ , [{x:0 , y:0}]) ,
         });
     }
 }
