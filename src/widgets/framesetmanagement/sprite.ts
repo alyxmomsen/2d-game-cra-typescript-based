@@ -39,13 +39,14 @@ export default class Sprite {
 
     private type:'main' = 'main' ;
     private image:HTMLImageElement ;
-
     private frameSourceDimensions:Dimensions ;
     private frameRenderingDimensions:Dimensions ;
-    private currentFrame:Position|null; 
-
+    private currentFrame:Position|null ; 
     private frameSheet:FrameSheet ;
     private currentFrameSheetID:number|undefined ;
+    static makeFrame (distance:number ,id:number , relX:number , relY:number) {
+        return {x:distance * id + relX , y:0 + relY} ;
+    }
 
     updateToNextPosition () {
 
@@ -83,6 +84,7 @@ export default class Sprite {
             framePositionDistance:{byX:number , byY:number} , 
             framRelativePosition:{x:number , y:number}
             frameSet:Position[]}) {
+
         this.image = image ;
         this.frameSourceDimensions = frameSourceDimensions ;
         this.currentFrame = {x:0 , y:0} ;

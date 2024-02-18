@@ -221,7 +221,7 @@ export class Game {
                 frame.position.y ,
                 frame.dimensions.width,
                 frame.dimensions.height,
-                position.x , position.y - 8 , frame.renderDimensions.width, frame.renderDimensions.height
+                position.x - 8 , position.y , frame.renderDimensions.width, frame.renderDimensions.height
             );
         }
 

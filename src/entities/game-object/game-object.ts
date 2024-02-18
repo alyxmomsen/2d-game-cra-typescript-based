@@ -13,7 +13,7 @@ export class GameObject extends GameObjectParent {
 
     // private status:'stand'|'move';
     readonly spriteManager:SpriteManager;
-    readonly colliderBoxVisisbility = false ; // game-object`s primitive 
+    readonly colliderBoxVisisbility = true ; // game-object`s primitive 
     private isInGame:boolean ;
     private rigidBody:boolean ;
     readonly movement:Movement ;
