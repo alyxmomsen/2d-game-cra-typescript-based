@@ -12,8 +12,9 @@ export default class ToxicBox extends GameObject {
 
         const rectSize = 50 ;
 
-        const img = new Image() ;
-        img.src = sprite_main ;
+        const spriteImg_theBucket = new Image() ;
+        spriteImg_theBucket.src = sprite_main ;
+
 
         super({
             position:randomPosition({posX:{min:0 , max:600} , posY:{min:0 , max:600}}) ,
@@ -22,7 +23,13 @@ export default class ToxicBox extends GameObject {
             rigidBody:false ,
             kind:'toxic_box' ,
             // imageSrc_main ,
-            sprite:new Sprite(img , {width:1000 , height:1000} , {width:1 * 35 , height:2 * 35} , [{x:0 , y:0}]) ,
+            sprite:[new Sprite({
+                image:spriteImg_theBucket , 
+                frameSourceDimensions:{width:1000 , height:1000} , 
+                frameRenderingDimensions:{width:1 * 35 , height:2 * 35} ,
+                framePositionDistance:{byX:0 , byY:0} , 
+                framRelativePosition:{x:0 , y:0} ,
+                frameSet:[{x:0 , y:0}]})] ,
         });
     }
 }

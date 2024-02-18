@@ -71,7 +71,18 @@ export default class Sprite {
 
     }
 
-    constructor (image:HTMLImageElement , frameSourceDimensions:Dimensions , frameRenderingDimensions:Dimensions , frameSet:Position[]) {
+    constructor ({
+        image , 
+        frameSourceDimensions , 
+        frameRenderingDimensions , 
+        framePositionDistance ,
+        frameSet}:{
+            image:HTMLImageElement , 
+            frameSourceDimensions:Dimensions , 
+            frameRenderingDimensions:Dimensions ,
+            framePositionDistance:{byX:number , byY:number} , 
+            framRelativePosition:{x:number , y:number}
+            frameSet:Position[]}) {
         this.image = image ;
         this.frameSourceDimensions = frameSourceDimensions ;
         this.currentFrame = {x:0 , y:0} ;

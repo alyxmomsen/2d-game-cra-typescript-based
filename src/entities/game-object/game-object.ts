@@ -1,4 +1,4 @@
-import { Animator } from "../../shared/halpers/animator";
+import { Animator } from "../../shared/halpers/animator" ;
 import { Dimensions, Position } from "../../shared/types/types";
 import { InputController } from "../../widgets/input-controller/input-controller";
 import { Movement } from "../../widgets/movement/movement" ;
@@ -16,7 +16,7 @@ export class GameObject extends GameObjectParent {
     readonly colliderBoxVisisbility = false ; // game-object`s primitive 
     private isInGame:boolean ;
     private rigidBody:boolean ;
-    readonly movement:Movement;
+    readonly movement:Movement ;
     private dimensions:Dimensions ;
     private position:Position ;
     readonly kind:string ;
@@ -35,9 +35,7 @@ export class GameObject extends GameObjectParent {
 
         const position = this.position ;
         const delta = this.movement.getDelta();
-
         const calculatedPosition = {x:position.x + delta.x , y:position.y + delta.y} ;
-
         return calculatedPosition ;
     }
     
@@ -114,7 +112,7 @@ export class GameObject extends GameObjectParent {
             rigidBody:boolean ,
             kind:string ,
             // imageSrc_main:string|undefined ,
-            sprite:Sprite ,
+            sprite:Sprite[] ,
         }
     ) {
         super();
@@ -142,7 +140,7 @@ export class GameObject extends GameObjectParent {
         // console.log(sprite_1);
 
         this.spriteManager  = new SpriteManager() ;
-        this.spriteManager.push(sprite);
+        this.spriteManager.push(sprite[this.kind === 'player' ? 1 : 0]);
 
 
 

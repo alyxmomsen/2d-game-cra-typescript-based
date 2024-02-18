@@ -6,7 +6,6 @@ import { GameObject } from "../game-object/game-object";
 import { Player } from "../player/player";
 import ToxicBox from "../toxic-box/toxic-box";
 
-
 export class Game {
 
     // image:HTMLImageElement ;
@@ -49,7 +48,7 @@ export class Game {
             /* -------------------------------------- */
             /* get damage from toxic boxes */
             subject.updateHealthByValue(isPlayer ? -toxicBoxDamage : 0); // get damage and isAlive
-            
+
             /* get input orders */
             subject.controller.input({keys: (isPlayer) ? [...this.keyHandler.getKeys()] : [] , damage:0}) ;
             /* update position delta */
@@ -78,7 +77,6 @@ export class Game {
                     }
 
                     /* ---------------- */
-
 
                     /* temp */
                     if(collisionaire.getRigidBody()) {
