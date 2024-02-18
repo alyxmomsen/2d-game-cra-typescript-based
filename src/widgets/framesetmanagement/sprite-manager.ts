@@ -3,7 +3,7 @@ import Sprite from "./sprite";
 
 export default class SpriteManager {
 
-    private frameRate:number = 1000 / 16 ;
+    private frameRate:number = 1000 / 12 ;
     private lastAnimatedTime:number ;
     private sprites:Sprite[] ;
     private currentSpriteID:number|undefined ;
