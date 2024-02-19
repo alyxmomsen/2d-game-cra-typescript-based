@@ -4,7 +4,7 @@ import SpriteManager from "../../widgets/framesetmanagement/sprite-manager";
 import { GameObject } from "../game-object/game-object";
 
 // import sprite_main from "./../../toxic-box.png"
-import sprite_flames from './../../sprites/flames/flames.png' ;
+import sprite_flames from './../../sprites/flames/flame1/images/Sek_00001.png' ;
 
 export default class ToxicBox extends GameObject {
 
