@@ -2,12 +2,12 @@ import { runInThisContext } from "vm";
 import { Dimensions, Position } from "../../shared/types/types";
 
 
-class FrameSheet {
+class FramesTape {
 
     private frames:Position[] ;
     private frameID:number|undefined ;
 
-    next() {
+    nextID() {
 
         if(this.frames.length && this.frameID !== undefined) {
 
@@ -42,7 +42,7 @@ export default class Sprite {
     private frameSourceDimensions:Dimensions ;
     private frameRenderingDimensions:Dimensions ;
     private currentFrame:Position|null ; 
-    private frameSheet:FrameSheet ;
+    private frameSheet:FramesTape ;
     private currentFrameSheetID:number|undefined ;
     static makeFrame (distance:number ,id:number , relX:number , relY:number) {
         return {x:distance * id + relX , y:0 + relY} ;
@@ -50,7 +50,7 @@ export default class Sprite {
 
     updateToNextPosition () {
 
-        this.currentFrame = this.frameSheet.next();
+        this.currentFrame = this.frameSheet.nextID();
         // console.log(this.currentFrame?.x);
 
     }
@@ -77,7 +77,7 @@ export default class Sprite {
         frameSourceDimensions , 
         frameRenderingDimensions , 
         framePositionDistance ,
-        frameSet}:{
+        frameSet: framesSet}:{
             image:HTMLImageElement , 
             frameSourceDimensions:Dimensions , 
             frameRenderingDimensions:Dimensions ,
@@ -88,7 +88,7 @@ export default class Sprite {
         this.image = image ;
         this.frameSourceDimensions = frameSourceDimensions ;
         this.currentFrame = {x:0 , y:0} ;
-        this.frameSheet = new FrameSheet(frameSet) ;
+        this.frameSheet = new FramesTape(framesSet) ;
         this.frameRenderingDimensions = frameRenderingDimensions ;
 
     }

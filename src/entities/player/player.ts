@@ -4,6 +4,7 @@ import { GameObject } from "../game-object/game-object";
 // import sprite_main from './../../player.png' ;
 import sprite_run from './../../sprites/Knight/Run.png' ;
 import sprite_idle from './../../sprites/Knight/Idle.png' ;
+import SpriteManager from "../../widgets/framesetmanagement/sprite-manager";
 
 export class Player extends GameObject {
 
@@ -28,8 +29,8 @@ export class Player extends GameObject {
             isInGame , position:{x:0 , y:0} , 
             dimensions:{width:objectProportions.x * gameobjectSize , height:objectProportions.y * gameobjectSize} , 
             rigidBody:true , kind:'player' , 
-            // imageSrc_main:sprite_main ,
-            sprite:[
+            spriteManager:new SpriteManager() ,
+            sprites:[
                 new Sprite({
                     image:spriteIGM_run , 
                     frameSourceDimensions: {width:frameProportions.x * frameSourceSize , height:frameProportions.y * frameSourceSize} , 

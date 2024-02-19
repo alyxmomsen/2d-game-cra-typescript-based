@@ -45,8 +45,6 @@ export default class SpriteManager {
     }
 
     update() {
-        // this.frameSet[frameSetID] ;
-
 
         const time = Date.now();
         // let nextFrame = {}

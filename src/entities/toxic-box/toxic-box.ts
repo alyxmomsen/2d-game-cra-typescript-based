@@ -1,5 +1,6 @@
 import { randomPosition } from "../../shared/halpers/randomPosition";
 import Sprite from "../../widgets/framesetmanagement/sprite";
+import SpriteManager from "../../widgets/framesetmanagement/sprite-manager";
 import { GameObject } from "../game-object/game-object";
 
 import sprite_main from "./../../toxic-box.png"
@@ -22,8 +23,8 @@ export default class ToxicBox extends GameObject {
             isInGame:true , 
             rigidBody:false ,
             kind:'toxic_box' ,
-            // imageSrc_main ,
-            sprite:[new Sprite({
+            spriteManager:new SpriteManager() ,
+            sprites:[new Sprite({
                 image:spriteImg_theBucket , 
                 frameSourceDimensions:{width:1000 , height:1000} , 
                 frameRenderingDimensions:{width:1 * 35 , height:2 * 35} ,

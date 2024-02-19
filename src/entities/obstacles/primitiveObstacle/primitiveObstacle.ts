@@ -1,5 +1,6 @@
 import { randomPosition } from "../../../shared/halpers/randomPosition";
 import Sprite from "../../../widgets/framesetmanagement/sprite";
+import SpriteManager from "../../../widgets/framesetmanagement/sprite-manager";
 import { GameObject } from "../../game-object/game-object";
 
 export default class PrimitiveObstacle extends GameObject {
@@ -15,8 +16,8 @@ export default class PrimitiveObstacle extends GameObject {
             isInGame:true ,
             kind:'primitive_obstacle' ,
             position:randomPosition({posX:{min:0 , max:800} , posY:{min:0 , max:800}}) ,
-            // imageSrc_main:undefined ,
-            sprite:[new Sprite({
+            spriteManager:new SpriteManager() ,
+            sprites:[new Sprite({
                 image:img , 
                 frameSourceDimensions:{width:800 , height:800}, 
                 frameRenderingDimensions:{width:1 * 35 , height:2 * 35} ,

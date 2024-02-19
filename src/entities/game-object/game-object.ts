@@ -105,14 +105,14 @@ export class GameObject extends GameObjectParent {
     // }
 
     constructor (
-        {isInGame , position , dimensions , rigidBody , kind , sprite /* imageSrc_main */ }:{
+        {isInGame , position , dimensions , rigidBody , kind , spriteManager ,  sprites: sprite }:{
             isInGame:boolean , 
             position:Position , 
             dimensions:Dimensions ,
             rigidBody:boolean ,
             kind:string ,
-            // imageSrc_main:string|undefined ,
-            sprite:Sprite[] ,
+            spriteManager:SpriteManager ,
+            sprites:Sprite[] ,
         }
     ) {
         super();
@@ -132,17 +132,7 @@ export class GameObject extends GameObjectParent {
 
         this.controller = new InputController () ;
 
-        /* frame manager */
-
-        // const sprite_1 = new Image() ;
-        // sprite_1.src = imageSrc_main ? imageSrc_main : '' ;
-
-        // console.log(sprite_1);
-
-        this.spriteManager  = new SpriteManager() ;
+        this.spriteManager  = spriteManager ;
         this.spriteManager.push(sprite[this.kind === 'player' ? 1 : 0]);
-
-
-
     }
 }

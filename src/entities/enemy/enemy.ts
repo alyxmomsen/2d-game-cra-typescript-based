@@ -1,5 +1,6 @@
 import { randomPosition } from "../../shared/halpers/randomPosition";
 import Sprite from "../../widgets/framesetmanagement/sprite";
+import SpriteManager from "../../widgets/framesetmanagement/sprite-manager";
 import { GameObject } from "../game-object/game-object";
 
 import sprite_main from "./../../enemy.png" ;
@@ -28,8 +29,8 @@ export class Enemy extends GameObject {
             dimensions:{width:objectProportions.x * gameobjectSize , height:objectProportions.y * gameobjectSize} ,
             isInGame:true , 
             rigidBody:true , 
-            // imageSrc_main:sprite_main ,
-            sprite:[new Sprite(
+            spriteManager:new SpriteManager() ,
+            sprites:[new Sprite(
                 {image:img , 
                 frameSourceDimensions:{width:frameProportions.x * frameSourceSize , height:frameProportions.y * frameSourceSize} , 
                 frameRenderingDimensions:{width:frameProportions.x * frameRenderSize , height:frameProportions.y * frameRenderSize} ,
