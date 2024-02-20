@@ -16,8 +16,6 @@ const GameCanvas: React.FC = () => {
       // }
         const ctx = canvas.getContext('2d');
 
-
-
         if(ctx) {
 
             const game = new Game(ctx , {vw:canvas.width , vh:canvas.height} );

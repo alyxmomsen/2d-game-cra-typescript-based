@@ -105,14 +105,14 @@ export class GameObject extends GameObjectParent {
     // }
 
     constructor (
-        {isInGame , position , dimensions , rigidBody , kind , spriteManager ,  sprites: sprite }:{
+        {isInGame , position , dimensions , rigidBody , kind , spriteManager /* ,  sprites: sprite */ }:{
             isInGame:boolean , 
             position:Position , 
             dimensions:Dimensions ,
             rigidBody:boolean ,
             kind:string ,
             spriteManager:SpriteManager ,
-            sprites:Sprite[] ,
+            // sprites:Sprite[] ,
         }
     ) {
         super();
@@ -129,10 +129,7 @@ export class GameObject extends GameObjectParent {
         this.dimensions = {...dimensions} ;
         this.health = 100 ;
         this.armor = 100 ;
-
         this.controller = new InputController () ;
-
         this.spriteManager  = spriteManager ;
-        this.spriteManager.push(sprite[this.kind === 'player' ? 1 : 0]);
     }
 }

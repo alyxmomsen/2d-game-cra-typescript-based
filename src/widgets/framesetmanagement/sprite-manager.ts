@@ -6,7 +6,7 @@ export default class SpriteManager {
     private frameRate:number = 1000 / 12 ;
     private lastAnimatedTime:number ;
     private sprites:Sprite[] ;
-    private currentSpriteID:number|undefined ;
+    private currentSpriteID:number ;
 
     push (spriteSet:Sprite) {
         this.sprites = [...this.sprites , spriteSet] ; /// its need check for repeat of if the same
@@ -53,24 +53,22 @@ export default class SpriteManager {
 
             if(this.currentSpriteID !== undefined) {
                 // console.log('tick') ;
-                this.sprites[this.currentSpriteID].updateToNextPosition() ;
+                this.sprites[this.currentSpriteID].updateFrameToNextPosition() ;
             }
 
             this.lastAnimatedTime = time ;
-
         }
-
-
     }
 
     setSpriteID (id:number) {
         this.currentSpriteID = id ;
     }
     
-    constructor () {
+    constructor ({sprites}:{sprites:Sprite[]}) {
         this.lastAnimatedTime = 0 ;
-        this.sprites = []; 
-        this.currentSpriteID = undefined ;
+        this.sprites = [...sprites]; 
+        this.currentSpriteID = Infinity ;
+        this.setSpriteID(0); // this is HARDCODE
     }
 
 }

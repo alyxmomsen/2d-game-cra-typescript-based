@@ -1,4 +1,4 @@
-import { runInThisContext } from "vm";
+// import { runInThisContext } from "vm";
 import { Dimensions, Position } from "../../shared/types/types";
 
 
@@ -37,20 +37,22 @@ class FramesTape {
 
 export default class Sprite {
 
-    private type:'main' = 'main' ;
+    // private type:'main' = 'main' ;
     private image:HTMLImageElement ;
     private frameSourceDimensions:Dimensions ;
     private frameRenderingDimensions:Dimensions ;
     private currentFrame:Position|null ; 
-    private frameSheet:FramesTape ;
-    private currentFrameSheetID:number|undefined ;
+    private framesTape:FramesTape ;
+    private frameSourceOffset:{x:number , y:number} ;
+    private frameDestinationOffset:{x:number , y:number} ;
+    // private currentFrameSheetID:number|undefined ;
     static makeFrame (distance:number ,id:number , relX:number , relY:number) {
         return {x:distance * id + relX , y:0 + relY} ;
     }
 
-    updateToNextPosition () {
+    updateFrameToNextPosition () {
 
-        this.currentFrame = this.frameSheet.nextID();
+        this.currentFrame = this.framesTape.nextID();
         // console.log(this.currentFrame?.x);
 
     }
@@ -58,38 +60,43 @@ export default class Sprite {
     getCurrentFrame() {
 
         if(this.currentFrame) {
-
             return {
                 image:this.image ,
-                position:this.currentFrame ,
-                dimensions:this.frameSourceDimensions , 
+                sourcePosition:this.currentFrame ,
+                sourceDimensions:this.frameSourceDimensions , 
+                renderPositionOffset:this.frameDestinationOffset ,
                 renderDimensions:this.frameRenderingDimensions ,
             }
         }
         else {
             return null ;
         }
-
     }
 
-    constructor ({
+    constructor (
+        {
         image , 
         frameSourceDimensions , 
         frameRenderingDimensions , 
-        framePositionDistance ,
-        frameSet: framesSet}:{
+        frameSourceOffset: frameOffset ,
+        frameRenderingPositionOffset: frameDestinationOffset ,
+        frameSet: framesSet ,
+        }:
+        {
             image:HTMLImageElement , 
             frameSourceDimensions:Dimensions , 
             frameRenderingDimensions:Dimensions ,
-            framePositionDistance:{byX:number , byY:number} , 
-            framRelativePosition:{x:number , y:number}
-            frameSet:Position[]}) {
+            frameSourceOffset:{x:number , y:number} ,
+            frameRenderingPositionOffset:{x:number , y:number} ,
+            frameSet:Position[]
+        }) {
 
         this.image = image ;
         this.frameSourceDimensions = frameSourceDimensions ;
         this.currentFrame = {x:0 , y:0} ;
-        this.frameSheet = new FramesTape(framesSet) ;
+        this.framesTape = new FramesTape(framesSet) ;
         this.frameRenderingDimensions = frameRenderingDimensions ;
-
+        this.frameSourceOffset = frameOffset ;
+        this.frameDestinationOffset = {x:0 , y:0} ;
     }
 }

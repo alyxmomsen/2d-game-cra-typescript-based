@@ -214,14 +214,13 @@ export class Game {
 
         
         if(frame !== null) {
-            
             this.ctx.drawImage(
                 frame.image ,
-                frame.position.x ,
-                frame.position.y ,
-                frame.dimensions.width,
-                frame.dimensions.height,
-                position.x - 8 , position.y , frame.renderDimensions.width, frame.renderDimensions.height
+                frame.sourcePosition.x ,
+                frame.sourcePosition.y ,
+                frame.sourceDimensions.width ,
+                frame.sourceDimensions.height ,
+                position.x + frame.renderPositionOffset.x , position.y , frame.renderDimensions.width, frame.renderDimensions.height
             );
         }
 

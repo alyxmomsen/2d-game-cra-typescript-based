@@ -29,13 +29,12 @@ export class Enemy extends GameObject {
             dimensions:{width:objectProportions.x * gameobjectSize , height:objectProportions.y * gameobjectSize} ,
             isInGame:true , 
             rigidBody:true , 
-            spriteManager:new SpriteManager() ,
-            sprites:[new Sprite(
+            spriteManager:new SpriteManager({sprites:[new Sprite(
                 {image:img , 
                 frameSourceDimensions:{width:frameProportions.x * frameSourceSize , height:frameProportions.y * frameSourceSize} , 
                 frameRenderingDimensions:{width:frameProportions.x * frameRenderSize , height:frameProportions.y * frameRenderSize} ,
-                framePositionDistance:{byX:framePositionDistanceByX , byY:0} ,
-                framRelativePosition:{x:29 , y:55} ,
+                frameSourceOffset:{x:0 , y:0} ,
+                frameRenderingPositionOffset:{x:0 , y:0} ,
                 frameSet:[
                     {x:framePositionDistanceByX * 0 + frameRelativePositionX , y:0 + frameRelativePositionY} , 
                     {x:framePositionDistanceByX * 1 + frameRelativePositionX , y:0 + frameRelativePositionY} , 
@@ -44,7 +43,7 @@ export class Enemy extends GameObject {
                     {x:framePositionDistanceByX * 4 + frameRelativePositionX , y:0 + frameRelativePositionY} , 
                     {x:framePositionDistanceByX * 5 + frameRelativePositionX , y:0 + frameRelativePositionY} , 
                     {x:framePositionDistanceByX * 6 + frameRelativePositionX , y:0 + frameRelativePositionY}
-                ]})] ,
+                ]})]}) ,
         });
     }
 }
