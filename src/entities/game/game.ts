@@ -159,9 +159,7 @@ export class Game {
         if(this.player.getIsInGame()) {
 
             this.renderGameObject(this.player);
-            // const position = this.player.getPosition();
-            // const dimensions = this.player.getDimensions();
-            // this.renderRect(position.x , position.y , dimensions.width , dimensions.height , 'red');
+
         }
         
         /* --------------------------- */

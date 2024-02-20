@@ -16,13 +16,15 @@ export default class PrimitiveObstacle extends GameObject {
             isInGame:true ,
             kind:'primitive_obstacle' ,
             position:randomPosition({posX:{min:0 , max:800} , posY:{min:0 , max:800}}) ,
-            spriteManager:new SpriteManager({sprites:[new Sprite({
+            spriteManager:new SpriteManager({
+                sprites:[new Sprite({
                 image:img , 
-                frameSourceDimensions:{width:800 , height:800}, 
+                frameSourceDimensions:{width:50 , height:50}, 
                 frameRenderingDimensions:{width:1 * 35 , height:2 * 35} ,
                 frameSourceOffset:{x:0 , y:0} ,
                 frameRenderingPositionOffset:{x:0 , y:0} ,
-                frameSet:[{x:0 , y:0}]} )]}) ,
+                frameSet:[{x:0 , y:0}] ,
+            })]}) ,
             });
     }
 }
