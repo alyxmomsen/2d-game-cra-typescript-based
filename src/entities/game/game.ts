@@ -3,12 +3,29 @@ import { Dimensions, Position } from "../../shared/types/types";
 import { KeyHandler } from "../../widgets/key-handler/key-handler";
 import { Enemy } from "../enemy/enemy";
 import { GameObject } from "../game-object/game-object";
+import MapPointGrafManager from "../map-point/map-point";
 import { Player } from "../player/player";
 import ToxicBox from "../toxic-box/toxic-box";
 
+let lastTick = 0 ;
+
+function simpleTicker () {
+
+    const time = Date.now();
+    if(time - lastTick >= 1000) {
+        lastTick = time ;
+        return true ;
+    }
+    else {
+        return false ;
+    }
+}
+
 export class Game {
 
-    // image:HTMLImageElement ;
+    // private mapPoints:MapPoint[] ;
+
+    private mapPointsManager:MapPointGrafManager ;
 
     private ctx:CanvasRenderingContext2D ;
     private keyHandler:KeyHandler ;
@@ -102,7 +119,14 @@ export class Game {
             
         }
 
-        
+        if(simpleTicker()) {
+
+        }
+        const playerPosition = this.player.getPosition() ;
+        const playerDimensions = this.player.getDimensions() ;
+        const playerCenter = {x:playerPosition.x + playerDimensions.width / 2 , y:playerPosition.y + playerDimensions.height / 2} ; 
+        this.mapPointsManager.findNearestPoint(playerCenter);
+
     }
 
     checkSubjectCollisionsWith (subject:GameObject , objects:GameObject[]):GameObject[] {
@@ -154,8 +178,23 @@ export class Game {
             }
             this.renderGameObject(enemy);
         }
+
+        /* --------------------------- */
+        // rander map-points
         
-        /* render Player */
+        for (const point of this.mapPointsManager.getPoints() ) {
+            if(point.isNearest) {
+                this.ctx.fillStyle = 'red' ;
+            }
+            else {
+                this.ctx.fillStyle = 'orange' ;
+            }
+            // this.ctx.fillStyle = 'orange' ;
+            this.ctx.fillRect(point.position.x , point.position.y , 10 , 10) ;
+        }
+
+        /* --------------------------- */
+        // render Player
         if(this.player.getIsInGame()) {
 
             this.renderGameObject(this.player);
@@ -163,6 +202,22 @@ export class Game {
         }
         
         /* --------------------------- */
+
+        this.ctx.lineWidth = 2 ;
+        this.ctx.beginPath();
+        const playerPosition = this.player.getPosition() ;
+        const playerDimensions = this.player.getDimensions() ;
+        this.ctx.moveTo(playerPosition.x + playerDimensions.width / 2 , playerPosition.y + playerDimensions.height / 2);
+        const nearestPoint = this.mapPointsManager.getNearest();
+
+        if(nearestPoint !== null) {
+            const postition = nearestPoint.position ;
+            if(postition) {
+                
+                this.ctx.lineTo(postition.x , postition.y);
+                this.ctx.stroke();
+            }
+        }
         
         this.renderPlayerStats();
         
@@ -267,14 +322,18 @@ export class Game {
         this.enemies = [new Enemy()] ;
         this.toxicBoxes = [] ;
         
-        for (let i=0 ; i<40 ; i++) {
+        for (let i=0 ; i<10 ; i++) {
             this.toxicBoxes.push(new ToxicBox());
         }
 
         /* impulse generator */
         
         this.roomDamageImpulseGenerator = new ImpulseGenerator(1000);
-        
-        
+        /* --------------------- */
+        // map points
+
+        this.mapPointsManager = new MapPointGrafManager (50) ;
+        this.mapPointsManager.findNearestPoint(this.player.getPosition());
     }
 }
+
