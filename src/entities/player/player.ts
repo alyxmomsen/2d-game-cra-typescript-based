@@ -15,15 +15,9 @@ export class Player extends GameObject {
         const spriteIMG_idle = new Image();
         spriteIMG_idle.src = sprite_idle ;
         /* ----------------------- */
-        const frameRelativePositionX = 48 ;
-        const frameRelativePositionY = 63 ;
-        // const framePositionDistanceByX = 128 ;
-        /* ----------------------- */
         const objectProportions = {x:1 , y:1.8} ;
-        const frameProportions = {x:1 , y:2} ;
         const gameobjectSize = 65 ;
-        const frameSourceSize = 46 ;
-        const frameRenderSize = 85 ;
+        const frameSourceOffset = {x:40 , y:63} ;
         /* ----------------------- */
         super({
             isInGame , position:{x:0 , y:0} , 
@@ -31,29 +25,32 @@ export class Player extends GameObject {
             rigidBody:true , kind:'player' , 
             spriteManager:new SpriteManager({sprites:[
                 new Sprite({
-                    image:spriteIGM_run , 
-                    frameSourceDimensions: {width:frameProportions.x * frameSourceSize , height:frameProportions.y * frameSourceSize} , 
-                    frameRenderingDimensions: {width:frameProportions.x * frameRenderSize , height:frameProportions.y * frameRenderSize} ,
+                    image:spriteIGM_run ,
+                    /* ----------------------- */ 
+                    frameProportions:{x:1 , y:1.8} ,
+                    /* -------------------------- */
+                    frameSourceSize:44 ,
                     frameSourceOffset:{x:0 , y:0} ,
-                    frameRenderingPositionOffset:{x: -28 , y:0} ,
+                    /* ------------------------------------- */
+                    frameRenderingSize:85 ,
+                    frameRenderingOffset:{x: -10 , y:-2} ,
                     frameSet:[
-                        Sprite.makeFrame(128 , 0 , 48 , 63) ,
-                        Sprite.makeFrame(128 , 1 , 48 , 63) ,
-                        Sprite.makeFrame(128 , 2 , 48 , 63) ,
-                        Sprite.makeFrame(128 , 3 , 48 , 63) ,
-                        Sprite.makeFrame(128 , 4 , 48 , 63) ,
-                        Sprite.makeFrame(128 , 5 , 48 , 63) ,
-                        Sprite.makeFrame(128 , 6 , 48 , 63) , 
+                        Sprite.makeFrame(128 , 0 , frameSourceOffset.x , frameSourceOffset.y) ,
+                        Sprite.makeFrame(128 , 1 , frameSourceOffset.x , frameSourceOffset.y) ,
+                        Sprite.makeFrame(128 , 2 , frameSourceOffset.x , frameSourceOffset.y) ,
+                        Sprite.makeFrame(128 , 3 , frameSourceOffset.x , frameSourceOffset.y) ,
+                        Sprite.makeFrame(128 , 4 , frameSourceOffset.x , frameSourceOffset.y) ,
+                        Sprite.makeFrame(128 , 5 , frameSourceOffset.x , frameSourceOffset.y) ,
+                        Sprite.makeFrame(128 , 6 , frameSourceOffset.x , frameSourceOffset.y) , 
                     ]
                 }) , 
                 new Sprite({
                     image:spriteIMG_idle , 
-                    frameSourceDimensions: {width:frameProportions.x * frameSourceSize , height:frameProportions.y * frameSourceSize} , 
-                    frameRenderingDimensions: {width:frameProportions.x * frameRenderSize , height:frameProportions.y * frameRenderSize} ,
-                    // framePositionDistance:{byX:128 , byY:0} ,
                     frameSourceOffset:{x:0 , y:0} ,
-                    frameRenderingPositionOffset:{x:0 , y:0} ,
-                    // framRelativePosition:{x:48 , y:63} ,
+                    frameRenderingOffset:{x:0 , y:0} ,
+                    frameRenderingSize:85 ,
+                    frameProportions:{x:1 , y:2} ,
+                    frameSourceSize:46 ,
                     frameSet:[
                         Sprite.makeFrame(128 , 0 , 29 , 60) ,
                         Sprite.makeFrame(128 , 1 , 29 , 60) ,

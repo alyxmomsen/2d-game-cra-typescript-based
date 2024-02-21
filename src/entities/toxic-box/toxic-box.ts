@@ -27,13 +27,17 @@ export default class ToxicBox extends GameObject {
             isInGame:true , 
             rigidBody:false ,
             kind:'toxic_box' ,
-            spriteManager:new SpriteManager({sprites:[new Sprite({
-                image:spriteImg_theBucket , 
-                frameSourceDimensions:{width:1 * 10 , height:1.5 * 10} , 
-                frameRenderingDimensions:{width:1 * 50 , height:2 * 50} ,
-                frameSourceOffset:{x:0 , y:0} ,
-                frameRenderingPositionOffset:{x:0 , y:0} ,
-                frameSet:[Sprite.makeFrame(frameDistance , 0 , offsetX , offsetY) ,]})]}) ,
+            spriteManager:new SpriteManager({sprites:[
+                new Sprite({
+                    image:spriteImg_theBucket , 
+                    frameSourceOffset:{x:0 , y:0} ,
+                    frameRenderingOffset:{x:0 , y:0} ,
+                    frameRenderingSize:1 ,
+                    frameSet:[Sprite.makeFrame(frameDistance , 0 , offsetX , offsetY) ,] , 
+                    frameProportions:{x:1 ,y:1} ,
+                    frameSourceSize:50 , 
+                }) ,
+            ]}) ,
         });
     }
 }

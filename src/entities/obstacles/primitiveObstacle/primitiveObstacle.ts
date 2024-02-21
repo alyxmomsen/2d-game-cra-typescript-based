@@ -19,11 +19,12 @@ export default class PrimitiveObstacle extends GameObject {
             spriteManager:new SpriteManager({
                 sprites:[new Sprite({
                 image:img , 
-                frameSourceDimensions:{width:50 , height:50}, 
-                frameRenderingDimensions:{width:1 * 35 , height:2 * 35} ,
                 frameSourceOffset:{x:0 , y:0} ,
-                frameRenderingPositionOffset:{x:0 , y:0} ,
+                frameRenderingOffset:{x:0 , y:0} ,
+                frameRenderingSize:1 ,
                 frameSet:[{x:0 , y:0}] ,
+                frameProportions:{x:1 , y:1} ,
+                frameSourceSize:50 ,
             })]}) ,
             });
     }

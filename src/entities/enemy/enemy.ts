@@ -31,10 +31,11 @@ export class Enemy extends GameObject {
             rigidBody:true , 
             spriteManager:new SpriteManager({sprites:[new Sprite(
                 {image:img , 
-                frameSourceDimensions:{width:frameProportions.x * frameSourceSize , height:frameProportions.y * frameSourceSize} , 
-                frameRenderingDimensions:{width:frameProportions.x * frameRenderSize , height:frameProportions.y * frameRenderSize} ,
                 frameSourceOffset:{x:0 , y:0} ,
-                frameRenderingPositionOffset:{x:0 , y:0} ,
+                frameRenderingOffset:{x:-20 , y:-25} ,
+                frameRenderingSize:81 ,
+                frameProportions:{x:1, y:2} ,
+                frameSourceSize:42 ,
                 frameSet:[
                     {x:framePositionDistanceByX * 0 + frameRelativePositionX , y:0 + frameRelativePositionY} , 
                     {x:framePositionDistanceByX * 1 + frameRelativePositionX , y:0 + frameRelativePositionY} , 

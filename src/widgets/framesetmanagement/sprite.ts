@@ -40,14 +40,14 @@ export default class Sprite {
     // private type:'main' = 'main' ;
     private image:HTMLImageElement ;
     private frameSourceDimensions:Dimensions ;
+    private frameSourceProportions:{x:number ,y:number} ;
+    private frameSourceSize:number ;
     private frameRenderingDimensions:Dimensions ;
     private currentFrame:Position|null ; 
     private framesTape:FramesTape ;
-    private frameSourceOffset:{x:number , y:number} ;
-    private frameDestinationOffset:{x:number , y:number} ;
-    // private currentFrameSheetID:number|undefined ;
-    static makeFrame (distance:number ,id:number , relX:number , relY:number) {
-        return {x:distance * id + relX , y:0 + relY} ;
+    private frameRenderingOffset:{x:number , y:number} ;
+    static makeFrame (distance:number ,id:number , sourceOffsetX:number , sourceOffsetY:number) {
+        return {x:distance * id + sourceOffsetX , y:0 + sourceOffsetY} ;
     }
 
     updateFrameToNextPosition () {
@@ -64,7 +64,7 @@ export default class Sprite {
                 image:this.image ,
                 sourcePosition:this.currentFrame ,
                 sourceDimensions:this.frameSourceDimensions , 
-                renderPositionOffset:this.frameDestinationOffset ,
+                renderPositionOffset:this.frameRenderingOffset ,
                 renderDimensions:this.frameRenderingDimensions ,
             }
         }
@@ -75,28 +75,44 @@ export default class Sprite {
 
     constructor (
         {
-        image , 
-        frameSourceDimensions , 
-        frameRenderingDimensions , 
-        frameSourceOffset: frameOffset ,
-        frameRenderingPositionOffset: frameDestinationOffset ,
-        frameSet: framesSet ,
+            image , 
+            frameRenderingOffset ,
+            frameSet ,
+            frameRenderingSize ,
+            frameSourceOffset ,
+            frameProportions , 
+            frameSourceSize
         }:
         {
             image:HTMLImageElement , 
-            frameSourceDimensions:Dimensions , 
-            frameRenderingDimensions:Dimensions ,
+            // frameSourceDimensions:Dimensions , 
             frameSourceOffset:{x:number , y:number} ,
-            frameRenderingPositionOffset:{x:number , y:number} ,
-            frameSet:Position[]
+            frameRenderingOffset:{x:number , y:number} ,
+            frameSet:Position[] , 
+            frameRenderingSize:number ,
+            frameSourceSize:number , 
+            frameProportions:{x:number , y:number} ,
+            
         }) {
 
         this.image = image ;
-        this.frameSourceDimensions = frameSourceDimensions ;
+        /* -------------------------- */
+        this.frameSourceProportions = frameProportions ;
+        this.frameSourceSize = frameSourceSize ;
+        this.frameSourceDimensions = {
+            width:this.frameSourceProportions.x * this.frameSourceSize ,
+            height:this.frameSourceProportions.y * this.frameSourceSize ,
+        } ;
+
+        /* -------------------------- */
         this.currentFrame = {x:0 , y:0} ;
-        this.framesTape = new FramesTape(framesSet) ;
-        this.frameRenderingDimensions = frameRenderingDimensions ;
-        this.frameSourceOffset = frameOffset ;
-        this.frameDestinationOffset = {x:0 , y:0} ;
+        /* --------------------------- */
+        this.framesTape = new FramesTape(frameSet) ;
+        /* ------------------------------ */
+        this.frameRenderingOffset = frameRenderingOffset ;
+        this.frameRenderingDimensions = {
+            width:frameRenderingSize * frameProportions.x , 
+            height:frameRenderingSize * frameProportions.y , 
+        } ;
     }
 }

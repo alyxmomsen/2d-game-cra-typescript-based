@@ -218,7 +218,10 @@ export class Game {
                 frame.sourcePosition.y ,
                 frame.sourceDimensions.width ,
                 frame.sourceDimensions.height ,
-                position.x + frame.renderPositionOffset.x , position.y , frame.renderDimensions.width, frame.renderDimensions.height
+                position.x + frame.renderPositionOffset.x , 
+                position.y + frame.renderPositionOffset.y , 
+                frame.renderDimensions.width, 
+                frame.renderDimensions.height
             );
         }
 
