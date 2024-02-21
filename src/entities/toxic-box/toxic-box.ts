@@ -32,10 +32,10 @@ export default class ToxicBox extends GameObject {
                     image:spriteImg_theBucket , 
                     frameSourceOffset:{x:0 , y:0} ,
                     frameRenderingOffset:{x:0 , y:0} ,
-                    frameRenderingSize:1 ,
+                    frameRenderingSize:50 ,
                     frameSet:[Sprite.makeFrame(frameDistance , 0 , offsetX , offsetY) ,] , 
                     frameProportions:{x:1 ,y:1} ,
-                    frameSourceSize:50 , 
+                    frameSourceSize:1000 , 
                 }) ,
             ]}) ,
         });
