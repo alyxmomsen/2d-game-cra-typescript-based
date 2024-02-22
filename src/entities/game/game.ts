@@ -4,6 +4,7 @@ import { KeyHandler } from "../../widgets/key-handler/key-handler";
 import { Enemy } from "../enemy/enemy";
 import { GameObject } from "../game-object/game-object";
 import MapPointGrafManager from "../map-point/map-point";
+import PrimitiveObstacle from "../obstacles/primitiveObstacle/primitiveObstacle";
 import { Player } from "../player/player";
 import ToxicBox from "../toxic-box/toxic-box";
 
@@ -23,34 +24,30 @@ function simpleTicker () {
 
 export class Game {
 
-    // private mapPoints:MapPoint[] ;
-
-    private mapPointsManager:MapPointGrafManager ;
-
-    private ctx:CanvasRenderingContext2D ;
-    private keyHandler:KeyHandler ;
-
     private viewPortDimensions ;
+    private keyHandler:KeyHandler ;
+    private ctx:CanvasRenderingContext2D ;
+    private mapPointsManager:MapPointGrafManager ;
+    /* ---------------- */
+    private roomDamageImpulseGenerator:ImpulseGenerator ; // test
     
-    /* play objects */
+    /* ------------------------ */
+    // play objects
     
+    private primitiveObstacles:PrimitiveObstacle[] ;
     private player:Player ;
     private enemies:Enemy[] ;
     private toxicBoxes:ToxicBox[] ;
+    /* --------------------- */
+    private gameObjectsToIterate:GameObject[] ;
 
-    /* ============ */
-
-    /* ---------------------  */
-
-    private roomDamageImpulseGenerator:ImpulseGenerator ; // test
-
-    /* ---------------------- */
-
+    /* -------------------------- */
     
     update () {
         
         /* compile objects to update */
-        const objectsToUpdate = [this.player  , ...this.enemies, ...this.toxicBoxes] ;
+        // const objectsToUpdate = [this.player  , ...this.enemies, ...this.toxicBoxes] ;
+        const objectsToUpdate = this.gameObjectsToIterate ;
 
         /* calculate a damage of the room */
         const toxicBoxesGivesDamageSumm = this.toxicBoxes.reduce<number>((acc, obj) => {
@@ -114,18 +111,12 @@ export class Game {
 
                 subject.updatePosititon();
             }
-            
-            
-            
         }
 
-        if(simpleTicker()) {
-
-        }
         const playerPosition = this.player.getPosition() ;
         const playerDimensions = this.player.getDimensions() ;
         const playerCenter = {x:playerPosition.x + playerDimensions.width / 2 , y:playerPosition.y + playerDimensions.height / 2} ; 
-        this.mapPointsManager.findNearestPoint(playerCenter);
+        this.mapPointsManager.findNearestPoint(playerCenter , this.enemies[0].getPosition());
 
     }
 
@@ -161,23 +152,30 @@ export class Game {
         
         this.renderBackGround('#222');
 
+        for (const gameObjectToIterate of this.gameObjectsToIterate) {
+            if(!gameObjectToIterate.checkIsAlive()) {
+                continue ;
+            }
+            this.renderGameObject(gameObjectToIterate);
+        }
+
         /* render boxes */
-        for (const box of [...this.toxicBoxes]) {
+        /* for (const box of [...this.toxicBoxes]) {
 
             if(!box.checkIsAlive()) {
                 continue ;
             }
             this.renderGameObject(box);
-        }
+        } */
         
         /* render enemies */
-        for (const enemy of [...this.enemies]) {
+        /* for (const enemy of [...this.enemies]) {
 
             if(!enemy.checkIsAlive()) {
                 continue ;
             }
             this.renderGameObject(enemy);
-        }
+        } */
 
         /* --------------------------- */
         // rander map-points
@@ -195,11 +193,11 @@ export class Game {
 
         /* --------------------------- */
         // render Player
-        if(this.player.getIsInGame()) {
+        /* if(this.player.getIsInGame()) {
 
             this.renderGameObject(this.player);
 
-        }
+        } */
         
         /* --------------------------- */
 
@@ -315,25 +313,56 @@ export class Game {
 
     constructor (ctx:CanvasRenderingContext2D , viewPortDimensions:{vw:number , vh:number}) {
 
+        /* -------------------------- */
+        // impulse generator
+        this.roomDamageImpulseGenerator = new ImpulseGenerator(1000);
+
+        /* -------------------------- */
+        // canvas
         this.ctx = ctx ;
         this.viewPortDimensions = viewPortDimensions ;
         this.keyHandler = new KeyHandler() ;
+
+        /* =========================== */
+        this.gameObjectsToIterate = [] ;
+        /* =========================== */
+
+        /* -------------------------- */
+        // player
         this.player = new Player({isInGame:true}) ;
+        this.gameObjectsToIterate = [this.player] ;
+        /* -------------------------- */
+
+        /* -------------------------- */
+        // enemies
         this.enemies = [new Enemy()] ;
+        this.gameObjectsToIterate = [...this.gameObjectsToIterate , ...this.enemies] ;
+        /* -------------------------- */
+
+        /* -------------------------- */
+        // toxic boxes
         this.toxicBoxes = [] ;
-        
         for (let i=0 ; i<10 ; i++) {
             this.toxicBoxes.push(new ToxicBox());
         }
-
-        /* impulse generator */
+        this.gameObjectsToIterate = [...this.gameObjectsToIterate , ...this.toxicBoxes] ;
+        /* -------------------------- */
         
-        this.roomDamageImpulseGenerator = new ImpulseGenerator(1000);
-        /* --------------------- */
-        // map points
+        /* -------------------------- */
+        // primitive obstacles
+        this.primitiveObstacles = [] ;
+        for (let i=0 ; i<20 ; i++) {
 
+            this.primitiveObstacles.push(new PrimitiveObstacle({isCollideable:true}));
+        }
+        this.gameObjectsToIterate = [...this.gameObjectsToIterate , ...this.primitiveObstacles] ;
+        /* -------------------------- */
+
+        /* -------------------------- */
+        // map points
         this.mapPointsManager = new MapPointGrafManager (50) ;
-        this.mapPointsManager.findNearestPoint(this.player.getPosition());
+        
+        
     }
 }
 

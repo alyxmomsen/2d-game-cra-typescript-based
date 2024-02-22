@@ -9,6 +9,7 @@ function calculateDistance(coord1: Position, coord2: Position): number {
 
 export class MapPoint {
 
+    heuristic:number ;
     isNearest:boolean|undefined ;
     distance:number ;
     position:Position ;
@@ -16,56 +17,60 @@ export class MapPoint {
     constructor ({x,y}:{x:number , y:number}) {
         this.position = {x , y} ;
         this.distance = Infinity ;
+        this.heuristic = Infinity ;
     }
 }
 
 export default class MapPointGrafManager {
 
     private mapPoints:MapPoint[] ;
-    private nearest:MapPoint|null ;
+    private optimalPoint:MapPoint|null ;
+
+    private openList:MapPoint[] ;
+    private closedList:MapPoint[] ;
+
 
     getPoints () {
         return [...this.mapPoints] ;
     }
 
     getNearest () {
-        return {...this.nearest} ;
+        return {...this.optimalPoint} ;
     }
 
-    setTestQuery (start:Position , target:Position) {
-        // start -5:5
-        // 1: -3:5
-        // 2: -3:-5 
+    findNearestPoint(startPoint: Position , targetPoint:Position): MapPoint | null {
 
-    }
-
-    findNearestPoint(target: Position): MapPoint | null {
-        let nearestPoint: MapPoint | null = null;
+        let optimalPoint: MapPoint | null = null;
+        
         let nearestDistance = Infinity;
       
-        for (const point of this.mapPoints) {
-            point.isNearest = undefined ;
-          const distance = calculateDistance(point.position, target);
-          if (distance < nearestDistance) {
-            nearestDistance = distance;
-            nearestPoint = point;
-          }
-        }
+        this.openList.forEach((point , index , arr) => {
+            // point.isNearest = undefined ;
+            const distance1 = calculateDistance(point.position , startPoint) ;
+            const distance2 = calculateDistance(targetPoint , point.position) ;
 
-        if(nearestPoint) {
-            nearestPoint.isNearest = true ;
-            this.nearest = nearestPoint ;
-        }
+            const summDistance = distance1 + distance2 ;
+
+
+            if(summDistance < nearestDistance) {
+                nearestDistance = summDistance ;
+                optimalPoint = point ;
+                // nearestPoint.isNearest = true ;
+                this.optimalPoint = optimalPoint ;
+            }
+        }) ;
       
-        return nearestPoint;
-      }
+        return optimalPoint;
+    }
 
     constructor (count:number) {
-        this.nearest = null ;
+        this.optimalPoint = null ;
         this.mapPoints = [] ;
         for (let i=0 ; i<count ; i++) {
             this.mapPoints.push(new MapPoint({x:Math.random() * 666 , y:Math.random() * 666}));
         }
+        this.openList = this.mapPoints ;
+        this.closedList = [] ;
     }
 
 }
