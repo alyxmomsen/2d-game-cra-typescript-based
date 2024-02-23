@@ -7,11 +7,14 @@ export default class PrimitiveObstacle extends GameObject {
 
     constructor ({isCollideable}:{isCollideable:boolean}) {
 
+        const proportions = {x:1 , y:1} ;
+        const size = 50 ;
+
         const img = new Image() ;
         img.src = '' ;
         
         super({
-            dimensions:{width:20 , height:20} ,
+            dimensions:{width:proportions.x * size , height:proportions.y * size} ,
             rigidBody: isCollideable ,
             isInGame:true ,
             kind:'primitive_obstacle' ,

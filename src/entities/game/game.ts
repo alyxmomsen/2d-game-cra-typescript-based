@@ -159,24 +159,6 @@ export class Game {
             this.renderGameObject(gameObjectToIterate);
         }
 
-        /* render boxes */
-        /* for (const box of [...this.toxicBoxes]) {
-
-            if(!box.checkIsAlive()) {
-                continue ;
-            }
-            this.renderGameObject(box);
-        } */
-        
-        /* render enemies */
-        /* for (const enemy of [...this.enemies]) {
-
-            if(!enemy.checkIsAlive()) {
-                continue ;
-            }
-            this.renderGameObject(enemy);
-        } */
-
         /* --------------------------- */
         // rander map-points
         
@@ -190,17 +172,7 @@ export class Game {
             // this.ctx.fillStyle = 'orange' ;
             this.ctx.fillRect(point.position.x , point.position.y , 10 , 10) ;
         }
-
-        /* --------------------------- */
-        // render Player
-        /* if(this.player.getIsInGame()) {
-
-            this.renderGameObject(this.player);
-
-        } */
         
-        /* --------------------------- */
-
         this.ctx.lineWidth = 2 ;
         this.ctx.beginPath();
         const playerPosition = this.player.getPosition() ;
