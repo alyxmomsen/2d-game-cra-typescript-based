@@ -1,3 +1,4 @@
+import chanceGenerator from "../../shared/halpers/chance-generator";
 import { Position } from "../../shared/types/types";
 
 function calculateDistance(coord1: Position, coord2: Position): number {
@@ -9,12 +10,32 @@ function calculateDistance(coord1: Position, coord2: Position): number {
 
 export class MapPoint {
 
-    heuristic:number ;
-    isNearest:boolean|undefined ;
-    distance:number ;
-    position:Position ;
+   private heuristic:number ;
+    private isNearest:boolean|undefined ;
+    private distance:number ;
+    private position:Position ;
+    /* ------------------------ */
+    private relations:MapPoint[] ;
+    /* ------------------------ */
+
+    getPosition() {
+        return {...this.position} ;
+    }
+
+    getRelations () {
+        return this.relations ;
+    }
+
+    isThisNearest() {
+        return this.isNearest ;
+    }
+
+    addRelation (point:MapPoint) {
+        this.relations.push(point);
+    }
 
     constructor ({x,y}:{x:number , y:number}) {
+        this.relations = [] ;
         this.position = {x , y} ;
         this.distance = Infinity ;
         this.heuristic = Infinity ;
@@ -35,7 +56,7 @@ export default class MapPointGrafManager {
     }
 
     getNearest () {
-        return {...this.optimalPoint} ;
+        return this.optimalPoint ;
     }
 
     findNearestPoint(startPoint: Position , targetPoint:Position): MapPoint | null {
@@ -45,17 +66,15 @@ export default class MapPointGrafManager {
         let nearestDistance = Infinity;
       
         this.openList.forEach((point , index , arr) => {
-            // point.isNearest = undefined ;
-            const distance1 = calculateDistance(point.position , startPoint) ;
-            const distance2 = calculateDistance(targetPoint , point.position) ;
+
+            const distance1 = calculateDistance(point.getPosition() , startPoint) ;
+            const distance2 = calculateDistance(targetPoint , point.getPosition()) ;
 
             const summDistance = distance1 + distance2 ;
-
 
             if(summDistance < nearestDistance) {
                 nearestDistance = summDistance ;
                 optimalPoint = point ;
-                // nearestPoint.isNearest = true ;
                 this.optimalPoint = optimalPoint ;
             }
         }) ;
@@ -66,9 +85,54 @@ export default class MapPointGrafManager {
     constructor (count:number) {
         this.optimalPoint = null ;
         this.mapPoints = [] ;
+        let positive:number = 0 ;
+        let negative:number = 0 ;
+        /* --------------------------------- */
+        const closedList:MapPoint[] = [] ;
+        const openList:MapPoint[] = [] ;
+        /* ------------------------------ */
+        // creating the graf
+        let lastCreatedPoint:MapPoint|null = null ;
         for (let i=0 ; i<count ; i++) {
-            this.mapPoints.push(new MapPoint({x:Math.random() * 666 , y:Math.random() * 666}));
+
+            // const posLimits = {x:666 , y:666} ;
+            const min = {x:0 , y:0} ;
+            const max = {x:666 , y:666} ;
+
+            if(lastCreatedPoint) {
+                const lastPos = lastCreatedPoint.getPosition();
+                max.x = lastPos.x + 200 ;
+                min.x = lastPos.x - 200 ;
+                max.y = lastPos.y + 200 ;
+                min.y = lastPos.y - 200 ;
+            }
+            
+            const newPoint = new MapPoint({x:Math.random() * (max.x - min.x) + min.x , y:Math.random() * (max.y - min.y) + min.y}) ;
+            if(lastCreatedPoint === null) {
+
+                lastCreatedPoint = newPoint ;
+            }
+            else {
+                
+                lastCreatedPoint.addRelation(newPoint);
+                newPoint.addRelation(lastCreatedPoint);
+
+                if(!chanceGenerator(50 , 100000)) {
+
+                    lastCreatedPoint = newPoint ;
+                }
+                else {
+                    openList.push(newPoint) ;
+                }
+            }
+            
+            
+            
+            this.mapPoints.push(newPoint);
         }
+        // console.log(`positive: ${positive} | negative: ${negative}`) ;
+        console.log(this.mapPoints);
+        /* ------------------------------ */
         this.openList = this.mapPoints ;
         this.closedList = [] ;
     }

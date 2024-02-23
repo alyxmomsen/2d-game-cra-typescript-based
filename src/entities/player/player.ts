@@ -8,6 +8,10 @@ import SpriteManager from "../../widgets/framesetmanagement/sprite-manager";
 
 export class Player extends GameObject {
 
+    
+    static aspectRatio: { x: number; y: number; } = {x:1 , y:1.8};
+    static size: number = 65 ;
+
     constructor({isInGame}:{isInGame:boolean}) {
 
         const spriteIGM_run = new Image() ;

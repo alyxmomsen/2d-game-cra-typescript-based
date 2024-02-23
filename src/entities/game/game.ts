@@ -5,7 +5,7 @@ import { Dimensions, Position } from "../../shared/types/types";
 import { KeyHandler } from "../../widgets/key-handler/key-handler";
 import { Enemy } from "../enemy/enemy";
 import { GameObject } from "../game-object/game-object";
-import MapPointGrafManager from "../map-point/map-point";
+import MapPointGrafManager, { MapPoint } from "../map-point/map-point";
 import PrimitiveObstacle from "../obstacles/primitiveObstacle/primitiveObstacle";
 import { Player } from "../player/player";
 import ToxicBox from "../toxic-box/toxic-box";
@@ -163,16 +163,52 @@ export class Game {
 
         /* --------------------------- */
         // rander map-points
-        
+
+        const open = this.mapPointsManager.getPoints() ;
+        const closed:MapPoint[] = [] ;
+
+        const iterator = (points:MapPoint[]) => {
+            
+            points.forEach((point ,index ,arr) => {
+
+                this.ctx.fillStyle = 'blue' ;
+                const pos = point.getPosition();
+                this.ctx.fillRect(pos.x , pos.y , 10 , 10);
+                /* --------------------------------------- */
+
+                const rels = point.getRelations() ;
+
+                rels.forEach((rel , i) => {
+
+                    this.ctx.strokeStyle = 'purple' ;
+                    this.ctx.lineWidth = 2;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(pos.x , pos.y);
+                    const relPos = rel.getPosition();
+                    this.ctx.lineTo(relPos.x , relPos.y);
+                    this.ctx.stroke();
+                })
+
+            })
+            
+
+
+        }
+
+        do {
+            const points = open ;
+            iterator(points);
+        } while (false) ;
+
         for (const point of this.mapPointsManager.getPoints() ) {
-            if(point.isNearest) {
+            if(point.isThisNearest()) {
                 this.ctx.fillStyle = 'red' ;
             }
             else {
                 this.ctx.fillStyle = 'orange' ;
             }
             // this.ctx.fillStyle = 'orange' ;
-            this.ctx.fillRect(point.position.x , point.position.y , 10 , 10) ;
+            this.ctx.fillRect(point.getPosition().x , point.getPosition().y , 10 , 10) ;
         }
         
         this.ctx.strokeStyle = 'green' ;
@@ -184,7 +220,7 @@ export class Game {
         const nearestPoint = this.mapPointsManager.getNearest();
 
         if(nearestPoint !== null) {
-            const postition = nearestPoint.position ;
+            const postition = nearestPoint.getPosition() ;
             if(postition) {
                 
                 this.ctx.lineTo(postition.x , postition.y);
