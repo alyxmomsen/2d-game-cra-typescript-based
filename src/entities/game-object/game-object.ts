@@ -11,6 +11,9 @@ import SpriteManager from "../../widgets/framesetmanagement/sprite-manager" ;
 
 export class GameObject extends GameObjectParent {
 
+    static aspectRatio:{x:number , y:number} = {x:1 , y:1} ;
+    static size:number = 50 ;
+
     // private status:'stand'|'move';
     readonly spriteManager:SpriteManager;
     readonly colliderBoxVisisbility = true ; // game-object`s primitive 
@@ -87,23 +90,6 @@ export class GameObject extends GameObjectParent {
         return this.rigidBody ;
     }
 
-    // updateFrame(frameRate:number = 1000/60) {
-
-    //     const time = Date.now();
-    //     // let nextFrame = {}
-
-    //     if(time - this.lastAnimatedTime >= frameRate) {
-
-    //         this.currentFramePosition = this.animator.nextFrame();
-    //         this.lastAnimatedTime = time ;
-    //     }
-
-    // }
-
-    // getSpriteFrame () {
-    //     return {position:this.currentFramePosition , dim:this.frameDimensions} ;
-    // }
-
     constructor (
         {isInGame , position , dimensions , rigidBody , kind , spriteManager /* ,  sprites: sprite */ }:{
             isInGame:boolean , 
@@ -116,6 +102,8 @@ export class GameObject extends GameObjectParent {
         }
     ) {
         super();
+
+        // GameObject.aspectRatio = {x:1} ;
 
         this.margin = 50 ;
 

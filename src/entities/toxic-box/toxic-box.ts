@@ -34,7 +34,7 @@ export default class ToxicBox extends GameObject {
                     frameRenderingOffset:{x:0 , y:0} ,
                     frameRenderingSize:50 ,
                     frameSet:[Sprite.makeFrame(frameDistance , 0 , offsetX , offsetY) ,] , 
-                    frameProportions:{x:1 ,y:1} ,
+                    frameAspectRatio:{x:1 ,y:1} ,
                     frameSourceSize:1000 , 
                 }) ,
             ]}) ,

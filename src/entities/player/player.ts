@@ -15,19 +15,19 @@ export class Player extends GameObject {
         const spriteIMG_idle = new Image();
         spriteIMG_idle.src = sprite_idle ;
         /* ----------------------- */
-        const objectProportions = {x:1 , y:1.8} ;
+        const objectAspectRatio = {x:1 , y:1.8} ;
         const gameobjectSize = 65 ;
         const frameSourceOffset = {x:40 , y:63} ;
         /* ----------------------- */
         super({
             isInGame , position:{x:0 , y:0} , 
-            dimensions:{width:objectProportions.x * gameobjectSize , height:objectProportions.y * gameobjectSize} , 
+            dimensions:{width:objectAspectRatio.x * gameobjectSize , height:objectAspectRatio.y * gameobjectSize} , 
             rigidBody:true , kind:'player' , 
             spriteManager:new SpriteManager({sprites:[
                 new Sprite({
                     image:spriteIGM_run ,
                     /* ----------------------- */ 
-                    frameProportions:{x:1 , y:1.8} ,
+                    frameAspectRatio:{x:1 , y:1.8} ,
                     /* -------------------------- */
                     frameSourceSize:44 ,
                     frameSourceOffset:{x:0 , y:0} ,
@@ -49,7 +49,7 @@ export class Player extends GameObject {
                     frameSourceOffset:{x:0 , y:0} ,
                     frameRenderingOffset:{x:0 , y:0} ,
                     frameRenderingSize:85 ,
-                    frameProportions:{x:1 , y:2} ,
+                    frameAspectRatio:{x:1 , y:2} ,
                     frameSourceSize:46 ,
                     frameSet:[
                         Sprite.makeFrame(128 , 0 , 29 , 60) ,

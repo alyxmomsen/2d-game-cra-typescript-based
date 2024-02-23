@@ -1,4 +1,6 @@
 import { ImpulseGenerator } from "../../features/impulse-generator/impulse-generator";
+import isCollision from "../../shared/halpers/check-collision";
+import { randomPosition } from "../../shared/halpers/randomPosition";
 import { Dimensions, Position } from "../../shared/types/types";
 import { KeyHandler } from "../../widgets/key-handler/key-handler";
 import { Enemy } from "../enemy/enemy";
@@ -173,6 +175,7 @@ export class Game {
             this.ctx.fillRect(point.position.x , point.position.y , 10 , 10) ;
         }
         
+        this.ctx.strokeStyle = 'green' ;
         this.ctx.lineWidth = 2 ;
         this.ctx.beginPath();
         const playerPosition = this.player.getPosition() ;
@@ -314,7 +317,7 @@ export class Game {
         /* -------------------------- */
         // toxic boxes
         this.toxicBoxes = [] ;
-        for (let i=0 ; i<10 ; i++) {
+        for (let i=0 ; i<5 ; i++) {
             this.toxicBoxes.push(new ToxicBox());
         }
         this.gameObjectsToIterate = [...this.gameObjectsToIterate , ...this.toxicBoxes] ;
@@ -323,9 +326,27 @@ export class Game {
         /* -------------------------- */
         // primitive obstacles
         this.primitiveObstacles = [] ;
-        for (let i=0 ; i<20 ; i++) {
+        for (let i=0 ; i<19 ; i++) {
 
-            this.primitiveObstacles.push(new PrimitiveObstacle({isCollideable:true}));
+            const testPosition = randomPosition({posX:{min:0 , max:800} , posY:{min:0 , max:800}}) ;
+            let isCollisionDetected = false ;
+            for (const obstacle of this.primitiveObstacles) {
+                const position = obstacle.getPosition();
+                const dimensions = obstacle.getDimensions();
+                const isCollideing = isCollision(testPosition , {width:PrimitiveObstacle.aspectRatio.x * PrimitiveObstacle.size , height:PrimitiveObstacle.aspectRatio.y * PrimitiveObstacle.size} , position , dimensions);
+                if(isCollideing) {
+                    isCollisionDetected = true ;
+                    break ;
+                }
+            }
+
+            if(isCollisionDetected) {
+                i-- ;
+                continue ;
+            }
+            // this.checkSubjectCollisionsWith(position , [...this.primitiveObstacles])
+
+            this.primitiveObstacles.push(new PrimitiveObstacle({isCollideable:true , position:testPosition}));
         }
         this.gameObjectsToIterate = [...this.gameObjectsToIterate , ...this.primitiveObstacles] ;
         /* -------------------------- */

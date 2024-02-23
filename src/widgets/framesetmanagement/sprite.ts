@@ -40,7 +40,7 @@ export default class Sprite {
     // private type:'main' = 'main' ;
     private image:HTMLImageElement ;
     private frameSourceDimensions:Dimensions ;
-    private frameSourceProportions:{x:number ,y:number} ;
+    private frameSourceAspectRatio:{x:number ,y:number} ;
     private frameSourceSize:number ;
     private frameRenderingDimensions:Dimensions ;
     private currentFrame:Position|null ; 
@@ -80,7 +80,7 @@ export default class Sprite {
             frameSet ,
             frameRenderingSize ,
             frameSourceOffset ,
-            frameProportions , 
+            frameAspectRatio , 
             frameSourceSize
         }:
         {
@@ -91,17 +91,17 @@ export default class Sprite {
             frameSet:Position[] , 
             frameRenderingSize:number ,
             frameSourceSize:number , 
-            frameProportions:{x:number , y:number} ,
+            frameAspectRatio:{x:number , y:number} ,
             
         }) {
 
         this.image = image ;
         /* -------------------------- */
-        this.frameSourceProportions = frameProportions ;
+        this.frameSourceAspectRatio = frameAspectRatio ;
         this.frameSourceSize = frameSourceSize ;
         this.frameSourceDimensions = {
-            width:this.frameSourceProportions.x * this.frameSourceSize ,
-            height:this.frameSourceProportions.y * this.frameSourceSize ,
+            width:this.frameSourceAspectRatio.x * this.frameSourceSize ,
+            height:this.frameSourceAspectRatio.y * this.frameSourceSize ,
         } ;
 
         /* -------------------------- */
@@ -111,8 +111,8 @@ export default class Sprite {
         /* ------------------------------ */
         this.frameRenderingOffset = frameRenderingOffset ;
         this.frameRenderingDimensions = {
-            width:frameRenderingSize * frameProportions.x , 
-            height:frameRenderingSize * frameProportions.y , 
+            width:frameRenderingSize * frameAspectRatio.x , 
+            height:frameRenderingSize * frameAspectRatio.y , 
         } ;
     }
 }
