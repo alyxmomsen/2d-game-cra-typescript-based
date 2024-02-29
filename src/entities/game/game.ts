@@ -200,7 +200,7 @@ export class Game {
             iterator(points);
         } while (false) ;
 
-        for (const point of this.mapPointsManager.getPoints() ) {
+        /* for (const point of this.mapPointsManager.getPoints() ) {
             if(point.isThisNearest()) {
                 this.ctx.fillStyle = 'red' ;
             }
@@ -226,7 +226,7 @@ export class Game {
                 this.ctx.lineTo(postition.x , postition.y);
                 this.ctx.stroke();
             }
-        }
+        } */
         
         this.renderPlayerStats();
         
